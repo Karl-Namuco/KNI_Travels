@@ -1,0 +1,345 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    margin: 0;
+    background: #B48B78;
+    color: #29000A;
+    line-height: 1.6;
+}
+
+h1, h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+
+header .logo {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.hobbies-section a {
+    color: #74584D;
+}
+
+nav a {
+    font-family: 'Montserrat', sans-serif;
+    margin-right: 24px;
+    color: #E2DAD4;
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+nav a:last-child {
+    margin-right: 0;
+}
+
+nav a:hover {
+    box-shadow: 0 0 5px 5px #74584D;
+    border-radius: 4px;
+    transition: box-shadow 0.25s;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+section,
+aside {
+    background: #E2DAD4;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 15px; 
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input,
+button {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input:focus {
+    border-color: #74584D;
+    outline: none;
+}
+
+input:required {
+    border-left: 3px solid #5a0900;
+}
+
+details {
+    margin-top: 10px;
+    padding: 10px;
+}
+
+summary {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+details[open] summary {
+    color: #74584D;
+    transition: 0.3s;
+}
+
+.bio-flex {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    grid-column: 1 / span 2;
+    background: #E2DAD4;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bio-flex aside {
+    flex-shrink: 0;
+}
+
+.bio-flex img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.bio-flex section {
+    flex: 1;
+}
+
+.hobbies-section,
+.contact-section,
+.projects-section {
+    background: #E2DAD4;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.projects-section {
+    grid-column: 1 / 2;
+}
+
+.hobbies-section {
+    grid-column: 2 / 3;
+}
+
+.video-section {
+    grid-column: 1 / 2;
+    align-items: center;
+    background: #E2DAD4;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+}
+
+.contact-section {
+    grid-column: 2 / 3;
+}
+
+.summary-title {
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+footer {
+    background: #29000A;
+    color: #eee;
+    text-align: center;
+    padding: 20px;
+}
+
+footer a {
+    margin: 0 10px;
+    color: #eee;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+footer a:hover {
+    color: #74584D;
+}
+
+/* LAB 5 TASKS */
+
+input[type="submit"],
+button {
+    background: #74584D;
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background: #B48B78;
+}
+
+.pfp {
+    filter: grayscale(35%) brightness(1.1);
+    transition: filter 0.4s ease-in-out, transform 0.4s ease-in-out;
+}
+
+.pfp:hover {
+    filter: grayscale(0) brightness(1.1);
+    transform: scale(1.3) rotate(10deg);
+}
+
+.bio:hover,
+.hobbies:hover,
+.projects:hover,
+.contact:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    background: rgba(255,255,255,0.08);
+}
+
+.bio-flex:hover{
+    transform: scale(1.03) translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+header {
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #29000A;
+    color: #E2DAD4;
+    padding: 10px 20px;
+    filter: drop-shadow(0 10px 50px rgba(0, 0, 0, 0.3));
+    position: relative;
+}
+.pfp {
+filter: grayscale(35%) brightness(1.1);
+transition: filter 0.4s ease-in-out, transform 0.4s ease-in-out;
+}
+.pfp:hover::after{
+filter: grayscale(0) brightness(1.1);
+}
+.projects-section summary::after {
+content: "🧑🏼‍🎓";
+font-size: 1.2em;
+margin-left: 5px;
+}
+
+header::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(116, 88, 77, 0.35);
+    filter: blur(4px);
+    opacity: 0;
+    transform: scale(1);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border-radius: 12px;
+    z-index: -1;
+}
+
+header:hover::before {
+    opacity: 1;
+    transform: scale(1.03);
+}
+
+
+@media print {
+nav, footer {
+display: none;
+}
+body {
+font-size: 12pt;
+color: black;
+}
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background: #1a1a1a;
+    color: #E2DAD4;
+}
+
+body.dark-mode header {
+    background: #0d0d0d;
+    color: #E2DAD4;
+}
+
+body.dark-mode section,
+body.dark-mode aside {
+    background: #2a2a2a;
+    color: #E2DAD4;
+    border: 1px solid #444;
+}
+
+body.dark-mode main {
+    background: #1a1a1a;
+}
+
+body.dark-mode form {
+    background: #2a2a2a;
+}
+
+body.dark-mode input,
+body.dark-mode textarea {
+    background: #333;
+    color: #E2DAD4;
+    border: 1px solid #555;
+}
+
+body.dark-mode input:focus {
+    border: 1px solid #74584D;
+    box-shadow: 0 0 5px #74584D;
+}
+
+body.dark-mode button {
+    background: #74584D;
+    color: #E2DAD4;
+}
+
+body.dark-mode footer {
+    background: #0d0d0d;
+    color: #E2DAD4;
+    border-top: 1px solid #444;
+}
+
+body.dark-mode footer a {
+    color: #74584D;
+}
+
+body.dark-mode footer a:hover {
+    color: #E2DAD4;
+}
+
+body.dark-mode details {
+    background: #2a2a2a;
+    color: #E2DAD4;
+}
+
+body.dark-mode summary {
+    color: #E2DAD4;
+}
