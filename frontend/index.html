@@ -1,75 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KNI Travels</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <header id="navigation">
-        <div class="logo">
-            <h1>KNI Travels</h1> 
+      <div class="logo">
+        <h1>KNI Travels</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#travelpage">Travel</a></li>
+          <li><a href="#mytripspage">My Trips</a></li>
+          <li><a href="#profilepage">Profile</a></li>
+          <li><a href="#helppage">Help</a></li>
+        </ul>
+      </nav>
+      <div class="nav-extras">
+       <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="search-input" placeholder="Search destinations (e.g., Canyon, Desert...)">
         </div>
-        <nav>
-            <ul>
-                <li><a href="#travelpage">Travel</a></li>
-                <li><a href="#mytripspage">My Trips</a></li>
-                <li><a href="#profilepage">Profile</a></li>
-                <li><a href="#helppage">Help</a></li> 
-            </ul>
-        </nav>
-        <div class="nav-extras">
-            <input type="text" placeholder="Search...">
-            <a href="#" class="login-btn">Log in</a>
-        </div>
+        <a href="#" class="login-btn">Log in</a>
+      </div>
     </header>
 
     <main>
-        <section id="heropage">
-            <div class="hero-content">
-                <h1>EXPLORE THE WORLD</h1>
-                <p>Bakit ba hindi ka nakilala ng ako'y malaya pa?
-At hindi ngayon ang puso ko'y may kapiling na
-Bakit ba hindi ka nakilala ng ako'y nag-iisa?
-Sino ang iibigin?
-Ikaw sana</p>
-                <button class="cta-button">Book now</button>
-            </div>
-            <div class="hero-images">
-                </div>
-        </section>
+      <section id="heropage">
+        <div class="hero-content">
+          <h1>EXPLORE THE WORLD</h1>
+          <p>
+            Bakit ba hindi ka nakilala ng ako'y malaya pa? At hindi ngayon ang
+            puso ko'y may kapiling na Bakit ba hindi ka nakilala ng ako'y
+            nag-iisa? Sino ang iibigin? fuck it Ikaw sana
+          </p>
+          <button class="cta-button">Book now</button>
+          <button class="fixedbtn">View More</button>
+        </div>
+        <div class="hero-images"></div>
+      </section>
 
-        <section id="travelpage">
-            <h2>Travel Packages</h2>
-            </section>
-
-        <section id="mytripspage">
-            <h2>My Trips</h2>
-        </section>
-
-        <section id="profilepage">
-            <h2>Profile</h2>
-        </section>
+      <section id="travelpage">
+        <h2>Travel Packages</h2>
+        <div class="card-grid" id="destinations-grid">
+        </div>
+</div>
         
-        <section id="helppage">
-            <h2>Help & Support</h2>
-        </section>
+      </section>
+
+      <section id="mytripspage">
+        <h2>My Trips</h2>
+        <div id="myttrips" class="booked-grid">
+        <p class="empty-message">You have no active bookings.</p>
+    </div>
+</div>
+      </section>
+
+      <section id="profilepage">
+        <h2>Profile</h2>
+      </section>
+
+      <section id="helppage">
+        <h2>Help & Support</h2>
+      </section>
     </main>
 
     <footer id="footer">
-        <div class="footer-links">
-            <a href="#">Copyright Information</a>
-            <a href="#">About Us</a>
-            <a href="#">Developer Team</a>
-            <a href="#" id="missionBtn">Mission & Vision</a>
-        </div>
-        <div class="socials">
-            <p>Facebook | Instagram</p>
-        </div>
+      <div class="footer-links">
+        <a href="#">Copyright Information</a>
+        <a href="#">About Us</a>
+        <a href="#">Developer Team</a>
+        <a href="#" id="missionBtn">Mission & Vision</a>
+      </div>
+      <div class="socials">
+        <p>Facebook | Instagram</p>
+      </div>
     </footer>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
