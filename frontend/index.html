@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KNI Travels</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
@@ -17,58 +18,72 @@
       </div>
       <nav>
         <ul>
-          <li><a href="#travelpage">Travel</a></li>
-          <li><a href="#mytripspage">My Trips</a></li>
-          <li><a href="#profilepage">Profile</a></li>
-          <li><a href="#helppage">Help</a></li>
+        <nav>
+                <ul>
+                    <li><a href="#" class="nav-link" data-view="travel-view">Travel</a></li>
+                    
+                    <li><a href="#" class="nav-link" data-view="mytrips-view">My Trips</a></li>
+                    <li><a href="#" class="nav-link" data-view="profile-view">Profile</a></li>
+                    <li><a href="#" class="nav-link" data-view="help-view">Help</a></li>
+                </ul>
+            </nav>
         </ul>
       </nav>
       <div class="nav-extras">
-       <div class="search-container">
+        <div class="search-container">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="search-input" placeholder="Search destinations (e.g., Canyon, Desert...)">
+            <input type="text" id="search-input" placeholder="Search destinations...">
         </div>
-        <a href="#" class="login-btn">Log in</a>
+        <a href="#" class="login-btn"><i class="fa-regular fa-user"></i> Log in</a>
       </div>
     </header>
 
     <main>
-      <section id="heropage">
+      <section id="heropage" class="active-section">
         <div class="hero-content">
           <h1>EXPLORE THE WORLD</h1>
           <p>
-            Bakit ba hindi ka nakilala ng ako'y malaya pa? At hindi ngayon ang
-            puso ko'y may kapiling na Bakit ba hindi ka nakilala ng ako'y
-            nag-iisa? Sino ang iibigin? fuck it Ikaw sana
+            Start your journey today. Discover hidden gems, book affordable packages, 
+            and create memories that last a lifetime with KNI Travels.
           </p>
-          <button class="cta-button">Book now</button>
-          <button class="fixedbtn">View More</button>
+          <div class="hero-buttons">
+              <button class="cta-button">Book Now</button>
+              <button class="secondary-btn">View More</button>
+          </div>
         </div>
-        <div class="hero-images"></div>
-      </section>
+        </section>
 
       <section id="travelpage">
         <h2>Travel Packages</h2>
-        <div class="card-grid" id="destinations-grid">
-        </div>
-</div>
-        
+        <div class="card-grid" id="destinations-grid"></div>
       </section>
 
       <section id="mytripspage">
         <h2>My Trips</h2>
         <div id="myttrips" class="booked-grid">
-        <p class="empty-message">You have no active bookings.</p>
-    </div>
-</div>
+           <p class="empty-message">You have no active bookings.</p>
+        </div>
       </section>
 
       <section id="profilepage">
         <h2>Profile</h2>
+        <div class="profile-container">
       </section>
 
       <section id="helppage">
         <h2>Help & Support</h2>
+        <div class="help-options">
+            <div class="help-card">
+                <i class="fa-solid fa-circle-question"></i>
+                <h3>FAQ</h3>
+                <p>Frequently asked questions.</p>
+            </div>
+            <div class="help-card">
+                <i class="fa-solid fa-envelope"></i>
+                <h3>Contact Us</h3>
+                <p>Get in touch with support.</p>
+            </div>
+        </div>
       </section>
     </main>
 
@@ -80,7 +95,7 @@
         <a href="#" id="missionBtn">Mission & Vision</a>
       </div>
       <div class="socials">
-        <p>Facebook | Instagram</p>
+        <p><i class="fa-brands fa-facebook"></i> Facebook | <i class="fa-brands fa-instagram"></i> Instagram</p>
       </div>
     </footer>
 
