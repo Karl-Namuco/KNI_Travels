@@ -2,45 +2,45 @@
 const destinations = [
     {
         id: 1,
-        title: "Shadowpeak Canyon",
-        location: "Colorado, USA",
+        title: "Technological University of the Philippines",
+        location: "Philippines, Manila",
         price: 67,
-        image: "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?auto=format&fit=crop&w=800&q=80"
+        image: "/assets/tup.jpg"
     },
     {
         id: 2,
-        title: "Crimson Rift",
-        location: "Wadi Rum Desert, Jordan",
+        title: "Intramuros",
+        location: "Manila, Philippines",
         price: 890,
-        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80"
+        image: "/assets/intramuros.jpg"
     },
     {
         id: 3,
-        title: "Whispering Dunes",
-        location: "Namib Desert, Namibia",
+        title: "Boracay",
+        location: "Aklan, Philippines",
         price: 1250,
-        image: "https://images.unsplash.com/photo-1540206351-d6465b3ac5c1?auto=format&fit=crop&w=800&q=80"
+        image: "/assets/boracay.jpg"
     },
     {
         id: 4,
-        title: "Frostveil Summit",
-        location: "Svalbard, Norway",
+        title: "Mount Fuji",
+        location: "Mt. Fuji, Japan",
         price: 3000,
-        image: "https://images.unsplash.com/photo-1530521954074-e64f6810b32d?auto=format&fit=crop&w=800&q=80"
+        image: "/assets/fuji.jpg"
     },
     {
         id: 5,
-        title: "Obsidian Hollow",
-        location: "Iceland Highlands",
+        title: "Eiffel Tower",
+        location: "Paris, France",
         price: 1000,
-        image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=80"
+        image: "/assets/eiffel.jpg"
     },
     {
         id: 6,
-        title: "Stormbreaker Isles",
-        location: "Faroe Islands",
+        title: "Hawaii Islands",
+        location: "Hawaii, USA",
         price: 450,
-        image: "https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?auto=format&fit=crop&w=800&q=80"
+        image: "/assets/hawaii.jpg"
     }
 ];
 
