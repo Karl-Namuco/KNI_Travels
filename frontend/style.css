@@ -1,7 +1,7 @@
 :root {
     /* Color Palette based on Proposal */
-    --primary-blue: #38b6ff;  /* Trust - Brand Color */
-    --accent-yellow: #ffc736; /* Energy - Buttons/Highlights */
+    --primary-blue: #38b6ff;  
+    --accent-yellow: #ffc736; 
     --text-dark: #090a0e; 
     --bg-white: #f2f3f4; 
     
@@ -68,13 +68,41 @@ nav a:hover { color: var(--primary-blue); }
 
 /* HERO SECTION */
 #heropage {
-    /* Keep the background and padding */
-    background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.7)), url('...');
-    background-size: cover;
-    background-position: center;
-    align-items: center; /* You can keep this */
+    position: relative;
     padding: 80px 5%;
     min-height: 80vh;
+    overflow: hidden;
+    align-items: center; 
+}
+
+#heropage.active-section {
+    display: flex;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; 
+}
+
+/* Styles for the actual Image */
+.bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.6));
 }
 
 .hero-content { max-width: 600px; }
@@ -147,10 +175,9 @@ section h2 { font-size: 2.5rem; text-align: center; margin-bottom: 40px; }
 
 .card-title { font-size: 1.25rem; margin: 0; }
 
-/* The Bottom Action Bar inside Card - BRAND COLORS */
 .action-btn {
-    background-color: var(--primary-blue); /* Replaced Orange with Brand Blue */
-    margin-top: auto; /* Pushes button to bottom */
+    background-color: var(--primary-blue); 
+    margin-top: auto;
     padding: 12px 20px;
     border-radius: 12px;
     display: flex;
