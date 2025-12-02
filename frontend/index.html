@@ -19,15 +19,13 @@
       <nav>
         <ul>
         <nav>
-                <ul>
-                    <li><a href="#" class="nav-link" data-view="travel-view">Travel</a></li>
-                    <li><a href="#" class="nav-link" data-view="mytrips-view">My Trips</a></li>
-                    <li><a href="#" class="nav-link" data-view="profile-view">Profile</a></li>
-                    <li><a href="#" class="nav-link" data-view="help-view">Help</a></li>
-                </ul>
-            </nav>
-        </ul>
-      </nav>
+            <ul>
+                <li><a href="#" class="nav-link" data-view="travel-view">Travel</a></li>
+                <li><a href="#" class="nav-link" data-view="mytrips-view">My Trips</a></li>
+                <li><a href="#" class="nav-link" data-view="profile-view">Profile</a></li>
+                <li><a href="#" class="nav-link" data-view="help-view">Help</a></li>
+            </ul>
+        </nav>
       <div class="nav-extras">
         <div class="search-container">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -41,8 +39,8 @@
     <section id="heropage" class="active-section">
         
         <div class="hero-bg">
-            <img src="assets/hero.jpg" alt="Travel Background" class="bg-img">
-            
+            <img src="/assets/hero-bg.jpg" alt="Travel Background" class="bg-img">
+
             <div class="overlay"></div>
         </div>
 
@@ -58,7 +56,7 @@
             </div>
         </div>
 
-    </section>
+      </section>
 
       <section id="travelpage">
         <h2>Travel Packages</h2>
@@ -72,23 +70,46 @@
         </div>
       </section>
 
-      <section id="profilepage">
+<section id="profilepage">
         <h2>Profile</h2>
-        <div class="profile-container">
-      </section>
+        
+        <div class="profile-layout">
+            <aside class="profile-sidebar">
+                <div class="profile-header">
+                    <div class="avatar-circle">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h3 id="display-name">Guest User</h3>
+                </div>
+                <ul class="profile-menu">
+                    <li class="active-menu">Account Settings</li>
+                    <li>Bookmarks</li>
+                    <li style="color: #dc3545; margin-top: 20px;">Log Out</li>
+                </ul>
+            </aside>
 
-      <section id="helppage">
-        <h2>Help & Support</h2>
-        <div class="help-options">
-            <div class="help-card">
-                <i class="fa-solid fa-circle-question"></i>
-                <h3>FAQ</h3>
-                <p>Frequently asked questions.</p>
-            </div>
-            <div class="help-card">
-                <i class="fa-solid fa-envelope"></i>
-                <h3>Contact Us</h3>
-                <p>Get in touch with support.</p>
+            <div class="profile-content">
+                <h3>Account Settings</h3>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="input-name" placeholder="Enter your name" value="Guest User">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="input-email" placeholder="name@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" placeholder="********">
+                    </div>
+
+                    <button type="submit" class="action-btn" style="border:none; width:auto; padding: 12px 30px;">
+                        Save Changes
+                    </button>
+                </form>
             </div>
         </div>
       </section>
