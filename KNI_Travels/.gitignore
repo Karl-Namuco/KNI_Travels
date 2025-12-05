@@ -1,0 +1,12 @@
+# Ignore Mac and Windows system files
+.DS_Store
+Thumbs.db
+
+# Ignore VS Code personal settings (optional but recommended)
+.vscode/
+
+# Ignore heavy dependencies (if you add them later)
+node_modules/
+
+# Ignore secrets
+.env
