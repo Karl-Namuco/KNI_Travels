@@ -9,6 +9,10 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
   </head>
   <body>
     <header id="navigation">
@@ -24,9 +28,13 @@
         </ul>
       </nav>
       <div class="nav-extras">
-       <div class="search-container">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="search-input" placeholder="Search destinations (e.g., Canyon, Desert...)">
+        <div class="search-container">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search destinations (e.g., Canyon, Desert...)"
+          />
         </div>
         <a href="#" class="login-btn">Log in</a>
       </div>
@@ -49,18 +57,14 @@
 
       <section id="travelpage">
         <h2>Travel Packages</h2>
-        <div class="card-grid" id="destinations-grid">
-        </div>
-</div>
-        
+        <div class="card-grid" id="destinations-grid"></div>
       </section>
 
       <section id="mytripspage">
         <h2>My Trips</h2>
         <div id="myttrips" class="booked-grid">
-        <p class="empty-message">You have no active bookings.</p>
-    </div>
-</div>
+          <p class="empty-message">You have no active bookings.</p>
+        </div>
       </section>
 
       <section id="profilepage">
@@ -83,7 +87,69 @@
         <p>Facebook | Instagram</p>
       </div>
     </footer>
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
 
+        <!-- Tabs to Switch Modes -->
+        <div class="auth-tabs">
+          <button id="tab-login" class="active-tab">Log In</button>
+          <button id="tab-register">Sign Up</button>
+        </div>
+
+        <!-- 1. LOGIN FORM -->
+        <form id="loginForm">
+          <h2 style="margin-top: 20px">Welcome Back</h2>
+          <div class="input-group">
+            <input
+              type="text"
+              id="login-username"
+              placeholder="Username"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <input
+              type="password"
+              id="login-password"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <button type="submit" class="modal-login-btn">Log In</button>
+          <p id="login-message" class="auth-message"></p>
+        </form>
+
+        <!-- 2. REGISTER FORM (Hidden by default) -->
+        <form id="registerForm" style="display: none">
+          <h2 style="margin-top: 20px">Create Account</h2>
+          <div class="input-group">
+            <input
+              type="text"
+              id="reg-username"
+              placeholder="Choose a Username"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <input
+              type="password"
+              id="reg-password"
+              placeholder="Create Password"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            class="modal-login-btn"
+            style="background-color: #27ae60"
+          >
+            Register
+          </button>
+          <p id="reg-message" class="auth-message"></p>
+        </form>
+      </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>

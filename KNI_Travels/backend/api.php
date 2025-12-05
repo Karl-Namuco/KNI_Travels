@@ -50,6 +50,22 @@ if ($action == 'update_price' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(["error" => "Error updating record: " . $conn->error]);
     }
 }
+// Inside api.php
 
+if ($action === 'delete') {
+    // Get the ID from the JS body
+    $data = json_decode(file_get_contents("php://input"));
+    
+    if(isset($data->id)) {
+        // DELETE SQL Query
+        $stmt = $conn->prepare("DELETE FROM destinations WHERE id = ?");
+        $stmt->execute([$data->id]);
+        
+        echo json_encode(["message" => "Destination deleted successfully"]);
+    } else {
+        echo json_encode(["message" => "Error: No ID provided"]);
+    }
+    exit;
+}
 $conn->close();
 ?>
