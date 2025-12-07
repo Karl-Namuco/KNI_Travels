@@ -1,118 +1,205 @@
-// 1. DATA (Travel Packages)
-const destinations = [
-    {
-        id: 1,
-        title: "Technological University of the Philippines",
-        location: "Philippines, Manila",
-        price: 67,
-        image: "/assets/tup.jpg"
-    },
-    {
-        id: 2,
-        title: "Intramuros",
-        location: "Manila, Philippines",
-        price: 890,
-        image: "/assets/intramuros.jpg"
-    },
-    {
-        id: 3,
-        title: "Boracay",
-        location: "Aklan, Philippines",
-        price: 1250,
-        image: "/assets/boracay.jpg"
-    },
-    {
-        id: 4,
-        title: "Mount Fuji",
-        location: "Mt. Fuji, Japan",
-        price: 3000,
-        image: "/assets/fuji.jpg"
-    },
-    {
-        id: 5,
-        title: "Eiffel Tower",
-        location: "Paris, France",
-        price: 1000,
-        image: "/assets/eiffel.jpg"
-    },
-    {
-        id: 6,
-        title: "Hawaii Islands",
-        location: "Hawaii, USA",
-        price: 450,
-        image: "/assets/hawaii.jpg"
-    }
-];
-
-// 2. STATE MANAGEMENT
+// 1. GLOBAL VARIABLES
+let destinations = []; 
 let bookedTrips = loadTripsFromLocalStorage(); 
 
 const gridContainer = document.getElementById('destinations-grid');
 const myTripsContainer = document.getElementById('myttrips');
 
-// 3. INITIALIZATION
-document.addEventListener('DOMContentLoaded', () => {
-    // Load Destinations
-    loadDestinations(destinations);
-    
-    // Load Bookings
-    renderBookedTrips(); 
+// --- API CONFIGURATION ---
+// Use '../backend/' if your HTML is in a subfolder (like 'frontend' or 'KNI_Travels')
+// Use 'backend/' if your HTML is in the root folder.
+const API_BASE_URL = '../backend/api.php'; 
+const AUTH_URL = '../backend/auth.php';
+const REGISTER_URL = '../backend/register.php';
 
-    // Search Listener
+// 2. MAIN INITIALIZATION (Runs when page loads)
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // A. Load Data
+    fetchDestinationsFromDB();
+    renderBookedTrips(); 
+    setupMissionVision();
+    setupAuthentication(); // Handles Login, Register, and Tabs
+
+    // B. Setup Search
     const searchInput = document.getElementById('search-input');
-    if(searchInput){
+    if(searchInput) {
         searchInput.addEventListener('input', filterDestinations);
     }
+});
 
-    // Mission & Vision Listener
+// 3. MISSION & VISION 
+function setupMissionVision() {
     const missionBtn = document.getElementById("missionBtn");
     if(missionBtn) {
         missionBtn.addEventListener("click", function(event) {
             event.preventDefault();
-            const mission = "Mission: To help travelers by providing a secure, easy, and comprehensive platform that simplifies the tiring process of trip planning and ensures a smooth, enjoyable, and stress-free travel experience.";
-            const vision = "Vision: To be a reliable and innovative travel website that connects travelers to meaningful experiences and unforgettable journeys.";
+            const mission = "Mission: To help travelers by providing a secure, easy platform...";
+            const vision = "Vision: To be a reliable and innovative travel website...";
             alert(mission + "\n\n" + vision);
         });
     }
-});
-
-// 4. FUNCTIONS
-
-// Save/Load
-function saveTripsToLocalStorage() {
-    localStorage.setItem('bookedTrips', JSON.stringify(bookedTrips));
 }
 
-function loadTripsFromLocalStorage() {
-    const storedTrips = localStorage.getItem('bookedTrips');
-    return storedTrips ? JSON.parse(storedTrips) : [];
-}
+// 4. AUTHENTICATION LOGIC (Login/Register/Tabs)
+function setupAuthentication() {
+    const modal = document.getElementById("loginModal");
+    const loginBtn = document.querySelector(".login-btn"); 
+    const closeSpan = document.querySelector(".close-btn");
+    
+    // Tabs & Forms
+    const tabLogin = document.getElementById("tab-login");
+    const tabRegister = document.getElementById("tab-register");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
 
-// Rendering Main Grid
-function loadDestinations(dataToRender) {
-    gridContainer.innerHTML = '';
+    // Open/Close Modal
+    if(loginBtn) {
+        loginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = "block";
+        });
+    }
+    if(closeSpan) closeSpan.onclick = () => modal.style.display = "none";
+    window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
 
-    if (dataToRender.length === 0) {
-        gridContainer.innerHTML = '<p class="no-results" style="grid-column: 1/-1; text-align:center;">No destinations found matching your search.</p>';
-        return;
+    // Tab Switching
+    if(tabLogin && tabRegister) {
+        tabLogin.addEventListener('click', () => {
+            loginForm.style.display = "block";
+            registerForm.style.display = "none";
+            tabLogin.classList.add("active-tab");
+            tabRegister.classList.remove("active-tab");
+        });
+
+        tabRegister.addEventListener('click', () => {
+            loginForm.style.display = "none";
+            registerForm.style.display = "block";
+            tabRegister.classList.add("active-tab");
+            tabLogin.classList.remove("active-tab");
+        });
     }
 
-    dataToRender.forEach(place => {
+    // Login Submit
+    if(loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById("login-username").value;
+            const password = document.getElementById("login-password").value;
+            // CHECK: Look for message ID (either login-message or login-error)
+            const msg = document.getElementById("login-message") || document.getElementById("login-error");
+
+            if(!msg) { console.error("Missing error message element in HTML"); return; }
+
+            // Point to your Auth Backend
+            fetch(AUTH_URL, { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    msg.style.color = "green";
+                    msg.textContent = "Login Successful!";
+                    
+                    // Save User Info
+                    localStorage.setItem('user_id', data.user_id);
+                    localStorage.setItem('username', username);
+                    
+                    setTimeout(() => {
+                        modal.style.display = "none";
+                        alert("Welcome, " + username + "!");
+                        // If Admin, go to Admin Panel. If User, reload page.
+                        if(username.toLowerCase() === 'admin') {
+                            window.location.href = "admin.html";
+                        } else {
+                            location.reload(); 
+                        }
+                    }, 1000);
+                } else {
+                    msg.style.color = "red";
+                    msg.textContent = data.message;
+                }
+            })
+            .catch(err => console.error(err));
+        });
+    }
+
+    // Register Submit
+    if(registerForm) {
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById("reg-username").value;
+            const password = document.getElementById("reg-password").value;
+            const msg = document.getElementById("reg-message");
+
+            fetch(REGISTER_URL, { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    msg.style.color = "green";
+                    msg.textContent = "Account Created!";
+                    setTimeout(() => {
+                        tabLogin.click(); // Switch to login tab
+                        const loginMsg = document.getElementById("login-message") || document.getElementById("login-error");
+                        if(loginMsg) {
+                            loginMsg.textContent = "Account created! Please log in.";
+                            loginMsg.style.color = "green";
+                        }
+                    }, 1500);
+                } else {
+                    msg.style.color = "red";
+                    msg.textContent = data.message;
+                }
+            })
+            .catch(err => console.error(err));
+        });
+    }
+}
+
+// 5. DATA FETCHING (Destinations)
+function fetchDestinationsFromDB() {
+    fetch(API_BASE_URL + '?action=read')
+        .then(response => {
+            if (!response.ok) throw new Error("API not found at " + API_BASE_URL);
+            return response.json();
+        })
+        .then(data => {
+            destinations = data;
+            loadDestinations(destinations);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            gridContainer.innerHTML = '<p class="no-results">Could not load destinations. Check Console for details.</p>';
+        });
+}
+
+// 6. RENDER & FILTER FUNCTIONS
+function loadDestinations(data) {
+    gridContainer.innerHTML = '';
+    if (data.length === 0) {
+        gridContainer.innerHTML = '<p class="no-results">No destinations found.</p>';
+        return;
+    }
+    data.forEach(place => {
         const card = document.createElement('article');
         card.className = 'card';
+        const imgSrc = place.image_url || place.image;
+        
+        // Added style="cursor:pointer" to make the whole card clickable for booking if you want
         card.innerHTML = `
-             <div class="card-img">
-                 <img src="${place.image}" alt="${place.title}">
-             </div>
+             <div class="card-img"><img src="${imgSrc}" alt="${place.title}"></div>
              <div class="card-content">
-                 <div class="location">
-                     <i class="fa-solid fa-location-dot"></i>
-                     <span>${place.location}</span>
-                 </div>
+                 <div class="location"><i class="fa-solid fa-location-dot"></i> <span>${place.location}</span></div>
                  <h2 class="card-title">${place.title}</h2>
-                 <div class="action-btn" onclick="bookTrip(${place.id})">
-                     <span class="price">$${place.price} <span class="per-person">/pax</span></span>
-                     <button class="view-btn">Book <i class="fa-solid fa-chevron-right"></i></button>
+                 <div class="action-btn" onclick="bookTrip(${place.id})" style="cursor: pointer;">
+                     <span class="price">₱${place.price}</span>
+                     <button class="view-btn">Book Now <i class="fa-solid fa-chevron-right"></i></button>
                  </div>
              </div>
          `;
@@ -120,117 +207,77 @@ function loadDestinations(dataToRender) {
     });
 }
 
-// Booking Logic
-function bookTrip(tripId) {
-    const tripToBook = destinations.find(trip => trip.id === tripId);
+function filterDestinations() {
+    const term = document.getElementById('search-input').value.toLowerCase();
+    const filtered = destinations.filter(p => 
+        p.title.toLowerCase().includes(term) || p.location.toLowerCase().includes(term)
+    );
+    loadDestinations(filtered);
+}
 
-    if (bookedTrips.some(trip => trip.id === tripId)) {
-        alert(`You have already booked the trip to ${tripToBook.title}.`);
+// 7. BOOKING LOGIC (LocalStorage)
+function bookTrip(tripId) {
+    // Check if user is logged in first!
+    const userId = localStorage.getItem('user_id');
+    
+    if(!userId) {
+        // REMOVED ALERT: alert("Please Log In to book a trip!");
+        
+        // Directly find the Modal and open it
+        const modal = document.getElementById("loginModal");
+        if(modal) {
+            modal.style.display = "block";
+            // Set a friendly message so they know why it opened
+            const msg = document.getElementById("login-message") || document.getElementById("login-error");
+            if(msg) {
+                msg.textContent = "Please log in to book a trip.";
+                msg.style.color = "#F2994A"; // Orange accent color
+            }
+        } else {
+            // Fallback just in case
+            console.error("Could not find loginModal. Trying button click...");
+            const loginBtn = document.querySelector(".login-btn");
+            if(loginBtn) loginBtn.click(); 
+        }
         return;
     }
 
-    bookedTrips.push(tripToBook);
+    const trip = destinations.find(t => t.id == tripId);
+    if (!trip) return;
+
+    if (bookedTrips.some(t => t.id == tripId)) {
+        alert(`You already booked ${trip.title}.`);
+        return;
+    }
+
+    bookedTrips.push(trip);
     saveTripsToLocalStorage(); 
     renderBookedTrips();
-    
-    document.getElementById('mytripspage').scrollIntoView({ behavior: 'smooth' });
+    alert(`✅ Successfully booked ${trip.title}!`);
 }
 
 function cancelBooking(tripId) {
-    bookedTrips = bookedTrips.filter(trip => trip.id !== tripId);
+    bookedTrips = bookedTrips.filter(t => t.id != tripId);
     saveTripsToLocalStorage(); 
     renderBookedTrips();
 }
 
 function renderBookedTrips() {
     myTripsContainer.innerHTML = ''; 
-
     if (bookedTrips.length === 0) {
         myTripsContainer.innerHTML = '<p class="empty-message">You have no active bookings.</p>';
         return;
     }
-
     bookedTrips.forEach(trip => {
-        const bookedCard = document.createElement('div');
-        bookedCard.className = 'booked-card';
-        bookedCard.innerHTML = `
-            <div class="booked-info">
-                <h4>${trip.title}</h4>
-                <p>Location: ${trip.location}</p>
-                <p><strong>Price: $${trip.price}</strong></p>
-            </div>
-            <button class="cancel-btn" onclick="cancelBooking(${trip.id})">
-                Cancel
-            </button>
+        const div = document.createElement('div');
+        div.className = 'booked-card';
+        div.innerHTML = `
+            <div class="booked-info"><h4>${trip.title}</h4><p>$${trip.price}</p></div>
+            <button class="cancel-btn" onclick="cancelBooking(${trip.id})">Cancel</button>
         `;
-        myTripsContainer.appendChild(bookedCard);
+        myTripsContainer.appendChild(div);
     });
 }
 
-// Search Logic
-function filterDestinations() {
-    const searchInput = document.getElementById('search-input');
-    const searchTerm = searchInput.value.toLowerCase();
-
-    const filteredDestinations = destinations.filter(place => {
-        const titleMatch = place.title.toLowerCase().includes(searchTerm);
-        const locationMatch = place.location.toLowerCase().includes(searchTerm);
-        return titleMatch || locationMatch;
-    });
-
-    loadDestinations(filteredDestinations);
-}
-
-// Switch tabs
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // 1. Define which sections belong to which view
-    const views = {
-        'travel-view': ['heropage', 'travelpage'], // Combines Hero + Travel
-        'mytrips-view': ['mytripspage'],
-        'profile-view': ['profilepage'],
-        'help-view': ['helppage']
-    };
-
-    // 2. Get all nav links
-    const navLinks = document.querySelectorAll('.nav-link');
-    const allSections = document.querySelectorAll('main > section');
-
-    // Function to switch views
-    function switchView(viewName) {
-        // A. Hide ALL sections first
-        allSections.forEach(section => {
-            section.classList.remove('active-section');
-        });
-
-        // B. Get the list of IDs for this view
-        const activeIds = views[viewName];
-
-        // C. Show ONLY the sections for this view
-        if (activeIds) {
-            activeIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.add('active-section');
-            });
-        }
-    }
-
-    // 3. Add Click Listeners to Nav Links
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const viewName = link.getAttribute('data-view');
-            switchView(viewName);
-        });
-    });
-
-    // 4. Handle "Book Now" buttons 
-    const bookButtons = document.querySelectorAll('.cta-button, .view-btn, .secondary-btn');
-    bookButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            switchView('travel-view'); 
-            document.getElementById('travelpage').scrollIntoView({ behavior: 'smooth' });
-        });
-    });
-    switchView('travel-view');
-});
+function saveTripsToLocalStorage() { localStorage.setItem('bookedTrips', JSON.stringify(bookedTrips)); }
+function loadTripsFromLocalStorage() { return JSON.parse(localStorage.getItem('bookedTrips') || '[]'); }
