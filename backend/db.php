@@ -1,9 +1,9 @@
 <?php
 $host = '127.0.0.1';
-$user = 'root';      // Default XAMPP user
-$pass = '';          // Default XAMPP password is empty
+$user = 'root';
+$pass = '';
 $db   = 'kni_travels';
-$port = 3325;             // Default MySQL port
+$port = 3325; // <--- THIS MUST MATCH YOUR XAMPP SCREENSHOT
 
 $conn = new mysqli($host, $user, $pass, $db, $port);
 

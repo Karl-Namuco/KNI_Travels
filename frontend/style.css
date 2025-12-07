@@ -117,20 +117,12 @@ body {
     min-height: 20px; /* Prevents jumping */
 }
 .KNI {
-    /* 1. Force the color to be transparent */
     color: transparent !important; 
-
-    /* 2. Ensure background image loads */
     background-image: url("https://i.pinimg.com/1200x/6f/a3/37/6fa337281685175ce57621183afffbd9.jpg");
-    
-    /* 3. Force background clip */
     -webkit-background-clip: text !important;
     background-clip: text !important;
-
     background-size: 200% auto;
     animation: anime 10s linear infinite;
-    
-    /* 4. Ensure the element is block-level (helps with clipping sometimes) */
     display: inline-block; 
 }
 
@@ -138,26 +130,15 @@ body {
     to { background-position-x: -200%; }
 }
 .EXPLORE {
-    /* 1. Force the color to be transparent */
     color: transparent !important; 
-
-    /* 2. Ensure background image loads */
     background-image: url("https://i.pinimg.com/1200x/6f/a3/37/6fa337281685175ce57621183afffbd9.jpg");
-    
-    /* 3. Force background clip */
     -webkit-background-clip: text !important;
     background-clip: text !important;
-
     background-size: 200% auto;
     animation: anime 10s linear infinite;
-    
-    /* 4. Ensure the element is block-level (helps with clipping sometimes) */
     display: inline-block; 
 }
 
-@keyframes anime {
-    to { background-position-x: -200%; }
-}
 /*TYPOGRAPHY*/
 h1, h2, h3 {
     font-family: var(--font-header);
@@ -238,7 +219,8 @@ nav a:hover {
 
 /*4. HERO SECTION*/
 #heropage {
-    display: flex;
+    /* Important: Use flex here to override any JS 'block' issues */
+    display: flex; 
     align-items: center;
     justify-content: space-between;
     padding: 80px 5%;
@@ -300,13 +282,31 @@ nav a:hover {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
 }
-/*Hero Images*/
+
+/* --- HERO IMAGES (Added Back) --- */
 .hero-images {
     flex: 1;
     display: flex;
-    gap: 10px;
     justify-content: center;
+    align-items: center;
+    padding-left: 20px;
 }
+
+/* --- NEW HERO IMAGE STYLE --- */
+.hero-main-img {
+    width: 100%;
+    max-width: 550px; /* Limits the size on large screens */
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 10px 10px 0px var(--accent-yellow); /* The Stylistic Shadow */
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.hero-main-img:hover {
+    transform: scale(1.02);
+}
+
 .card-grid {
     display: grid;
     /* Responsive grid: creates as many columns as fit, min width 320px */
