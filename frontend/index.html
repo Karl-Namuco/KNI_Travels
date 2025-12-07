@@ -33,7 +33,7 @@
           <input
             type="text"
             id="search-input"
-            placeholder="Search destinations (e.g., Canyon, Desert...)"
+            placeholder="Search destinations..."
           />
         </div>
         <a href="#" class="login-btn">Log in</a>
@@ -45,19 +45,17 @@
         <div class="hero-content">
           <h1 class="EXPLORE">EXPLORE THE WORLD</h1>
           <p>
-            Bakit ba hindi ka nakilala ng ako'y malaya pa? At hindi ngayon ang
-            puso ko'y may kapiling na Bakit ba hindi ka nakilala ng ako'y
-            nag-iisa? Sino ang iibigin? fuck it Ikaw sana
+            Writing effectively is an art. Start by using simple, everyday words people can easily understand. 
+            Be clear and direct to the point.
           </p>
           <button class="cta-button">Book now</button>
-          <button class="fixedbtn">View More</button>
         </div>
-        <div class="hero-images"></div>
       </section>
 
       <section id="travelpage">
         <h2>Travel Packages</h2>
-        <div class="card-grid" id="destinations-grid"></div>
+        <div class="card-grid" id="destinations-grid">
+            </div>
       </section>
 
       <section id="mytripspage">
@@ -69,10 +67,29 @@
 
       <section id="profilepage">
         <h2>Profile</h2>
+        <div class="profile-container" style="max-width:600px; margin:0 auto; background:white; padding:20px; border-radius:15px; text-align:center;">
+             <p>Welcome, <span id="display-username">Guest</span>!</p>
+             <button id="logout-btn" style="display:none; margin-top:10px; padding:10px 20px; background:#dc3545; color:white; border:none; border-radius:5px; cursor:pointer;">Log Out</button>
+        </div>
       </section>
 
       <section id="helppage">
         <h2>Help & Support</h2>
+        <div class="contact-container" style="max-width: 500px; margin: 0 auto;">
+            <form id="contactForm" class="contact-form">
+                <div class="input-group">
+                    <input type="text" id="contact-name" placeholder="Your Name" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="contact-email" placeholder="Your Email" required>
+                </div>
+                <div class="input-group">
+                    <textarea id="contact-message" placeholder="How can we help you?" rows="5" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;" required></textarea>
+                </div>
+                <button type="submit" class="modal-login-btn">Send Message</button>
+                <p id="contact-response" style="margin-top:10px; text-align:center;"></p>
+            </form>
+        </div>
       </section>
     </main>
 
@@ -87,69 +104,41 @@
         <p>Facebook | Instagram</p>
       </div>
     </footer>
+
     <div id="loginModal" class="modal">
       <div class="modal-content">
         <span class="close-btn">&times;</span>
-
-        <!-- Tabs to Switch Modes -->
         <div class="auth-tabs">
           <button id="tab-login" class="active-tab">Log In</button>
           <button id="tab-register">Sign Up</button>
         </div>
 
-        <!-- 1. LOGIN FORM -->
         <form id="loginForm">
           <h2 style="margin-top: 20px">Welcome Back</h2>
           <div class="input-group">
-            <input
-              type="text"
-              id="login-username"
-              placeholder="Username"
-              required
-            />
+            <input type="text" id="login-username" placeholder="Username" required />
           </div>
           <div class="input-group">
-            <input
-              type="password"
-              id="login-password"
-              placeholder="Password"
-              required
-            />
+            <input type="password" id="login-password" placeholder="Password" required />
           </div>
           <button type="submit" class="modal-login-btn">Log In</button>
           <p id="login-message" class="auth-message"></p>
         </form>
 
-        <!-- 2. REGISTER FORM (Hidden by default) -->
         <form id="registerForm" style="display: none">
           <h2 style="margin-top: 20px">Create Account</h2>
           <div class="input-group">
-            <input
-              type="text"
-              id="reg-username"
-              placeholder="Choose a Username"
-              required
-            />
+             <input type="text" id="reg-username" placeholder="Choose a Username" required />
           </div>
           <div class="input-group">
-            <input
-              type="password"
-              id="reg-password"
-              placeholder="Create Password"
-              required
-            />
+             <input type="password" id="reg-password" placeholder="Create Password" required />
           </div>
-          <button
-            type="submit"
-            class="modal-login-btn"
-            style="background-color: #27ae60"
-          >
-            Register
-          </button>
+          <button type="submit" class="modal-login-btn" style="background-color: #27ae60">Register</button>
           <p id="reg-message" class="auth-message"></p>
         </form>
       </div>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>

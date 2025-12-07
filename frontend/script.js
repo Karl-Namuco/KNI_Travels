@@ -6,27 +6,110 @@ const gridContainer = document.getElementById('destinations-grid');
 const myTripsContainer = document.getElementById('myttrips');
 
 // --- API CONFIGURATION ---
-// Use '../backend/' if your HTML is in a subfolder (like 'frontend' or 'KNI_Travels')
-// Use 'backend/' if your HTML is in the root folder.
-const API_BASE_URL = '../backend/api.php'; 
-const AUTH_URL = '../backend/auth.php';
-const REGISTER_URL = '../backend/register.php';
+const API_BASE_URL = 'backend/api.php'; 
+const AUTH_URL = 'backend/auth.php'; 
+const REGISTER_URL = 'backend/register.php';
+const CONTACT_URL = 'backend/contact.php';
 
-// 2. MAIN INITIALIZATION (Runs when page loads)
+// 2. MAIN INITIALIZATION
 document.addEventListener('DOMContentLoaded', () => {
     
-    // A. Load Data
+    // A. Initialize Tabs (Show Hero by default)
+    setupTabNavigation();
+
+    // B. Load Data
     fetchDestinationsFromDB();
     renderBookedTrips(); 
     setupMissionVision();
-    setupAuthentication(); // Handles Login, Register, and Tabs
+    setupAuthentication(); 
+    setupContactForm();
+    checkLoginState();
 
-    // B. Setup Search
+    // C. Setup Search
     const searchInput = document.getElementById('search-input');
     if(searchInput) {
         searchInput.addEventListener('input', filterDestinations);
     }
 });
+
+// SWITCH TABS
+function setupTabNavigation() {
+    const navLinks = document.querySelectorAll('nav ul li a');
+    const sections = document.querySelectorAll('main section'); // Gets all sections
+    const bookNowBtn = document.querySelector('.cta-button');
+    const logo = document.querySelector('.logo');
+
+    // Define the specific sections by ID for easy access
+    const heroSection = document.getElementById('heropage');
+    const travelSection = document.getElementById('travelpage');
+
+    // Function to switch tabs
+    function switchTab(targetId) {
+        sections.forEach(section => {
+            section.style.display = 'none';
+            section.classList.remove('active-section');
+        });
+        
+        if (targetId === 'travelpage' || targetId === 'home') {
+            if(heroSection) {
+                heroSection.style.display = 'flex'; // Hero uses flexbox in CSS
+                heroSection.classList.add('active-section');
+            }
+            if(travelSection) {
+                travelSection.style.display = 'block';
+                travelSection.classList.add('active-section');
+            }
+            // If specific 'travelpage' was clicked, scroll to it. Otherwise scroll top.
+            if(targetId === 'travelpage') {
+                setTimeout(() => {
+                    travelSection.scrollIntoView({ behavior: 'smooth' });
+                }, 10);
+            } else {
+                window.scrollTo(0, 0);
+            }
+
+        } else {
+            const targetSection = document.getElementById(targetId);
+            if(targetSection) {
+                targetSection.style.display = 'block';
+                targetSection.classList.add('active-section');
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // 3. Update Navigation Active State
+        navLinks.forEach(link => {
+            link.classList.remove('active-link');
+            const href = link.getAttribute('href').substring(1);
+            // If we are in "Home" mode, highlight 'travelpage' link
+            if (href === targetId) {
+                link.classList.add('active-link');
+            }
+        });
+    }
+    // Nav Links
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1); 
+            switchTab(targetId);
+        });
+    });
+
+    if(bookNowBtn) {
+        bookNowBtn.addEventListener('click', () => {
+            switchTab('travelpage');
+        });
+    }
+    // Logo -> "Home" 
+    if(logo) {
+        logo.style.cursor = 'pointer';
+        logo.addEventListener('click', () => {
+            switchTab('home'); 
+        });
+    }
+    switchTab('home');
+}
 
 // 3. MISSION & VISION 
 function setupMissionVision() {
@@ -34,36 +117,37 @@ function setupMissionVision() {
     if(missionBtn) {
         missionBtn.addEventListener("click", function(event) {
             event.preventDefault();
-            const mission = "Mission: To help travelers by providing a secure, easy platform...";
-            const vision = "Vision: To be a reliable and innovative travel website...";
+            const mission = "Mission: To help travelers by providing a secure, easy, and comprehensive platform that simplifies the tiring process of trip planning and ensures a smooth, enjoyable, and stress-free travel experience. To promote hidden tourist destinations, encouraging travelers to discover new places and experience its beauty.";
+            const vision = "Vision: To be a reliable and innovative travel website that connects travelers to meaningful experiences and unforgettable journeys. In the future, KNI Travels aims to become one of the most trusted travel services.";
             alert(mission + "\n\n" + vision);
         });
     }
 }
 
-// 4. AUTHENTICATION LOGIC (Login/Register/Tabs)
+// 4. AUTHENTICATION LOGIC
 function setupAuthentication() {
     const modal = document.getElementById("loginModal");
     const loginBtn = document.querySelector(".login-btn"); 
     const closeSpan = document.querySelector(".close-btn");
     
-    // Tabs & Forms
     const tabLogin = document.getElementById("tab-login");
     const tabRegister = document.getElementById("tab-register");
     const loginForm = document.getElementById("loginForm");
     const registerForm = document.getElementById("registerForm");
 
-    // Open/Close Modal
     if(loginBtn) {
         loginBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            modal.style.display = "block";
+            if(localStorage.getItem('username')) {
+                alert("You are already logged in as " + localStorage.getItem('username'));
+            } else {
+                modal.style.display = "block";
+            }
         });
     }
     if(closeSpan) closeSpan.onclick = () => modal.style.display = "none";
     window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
 
-    // Tab Switching
     if(tabLogin && tabRegister) {
         tabLogin.addEventListener('click', () => {
             loginForm.style.display = "block";
@@ -80,18 +164,13 @@ function setupAuthentication() {
         });
     }
 
-    // Login Submit
     if(loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const username = document.getElementById("login-username").value;
             const password = document.getElementById("login-password").value;
-            // CHECK: Look for message ID (either login-message or login-error)
-            const msg = document.getElementById("login-message") || document.getElementById("login-error");
+            const msg = document.getElementById("login-message");
 
-            if(!msg) { console.error("Missing error message element in HTML"); return; }
-
-            // Point to your Auth Backend
             fetch(AUTH_URL, { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -103,18 +182,19 @@ function setupAuthentication() {
                     msg.style.color = "green";
                     msg.textContent = "Login Successful!";
                     
-                    // Save User Info
-                    localStorage.setItem('user_id', data.user_id);
-                    localStorage.setItem('username', username);
+                    if (data.user) {
+                        localStorage.setItem('user_id', data.user.id);
+                        localStorage.setItem('username', data.user.username);
+                    } else {
+                        localStorage.setItem('username', username);
+                        localStorage.setItem('user_id', 1); 
+                    }
                     
                     setTimeout(() => {
                         modal.style.display = "none";
-                        alert("Welcome, " + username + "!");
-                        // If Admin, go to Admin Panel. If User, reload page.
+                        checkLoginState(); 
                         if(username.toLowerCase() === 'admin') {
                             window.location.href = "admin.html";
-                        } else {
-                            location.reload(); 
                         }
                     }, 1000);
                 } else {
@@ -126,7 +206,6 @@ function setupAuthentication() {
         });
     }
 
-    // Register Submit
     if(registerForm) {
         registerForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -145,8 +224,8 @@ function setupAuthentication() {
                     msg.style.color = "green";
                     msg.textContent = "Account Created!";
                     setTimeout(() => {
-                        tabLogin.click(); // Switch to login tab
-                        const loginMsg = document.getElementById("login-message") || document.getElementById("login-error");
+                        tabLogin.click(); 
+                        const loginMsg = document.getElementById("login-message");
                         if(loginMsg) {
                             loginMsg.textContent = "Account created! Please log in.";
                             loginMsg.style.color = "green";
@@ -162,24 +241,75 @@ function setupAuthentication() {
     }
 }
 
-// 5. DATA FETCHING (Destinations)
+// 5. CONTACT FORM
+function setupContactForm() {
+    const contactForm = document.getElementById('contactForm');
+    if(contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const message = document.getElementById('contact-message').value;
+            const responseMsg = document.getElementById('contact-response');
+
+            fetch(CONTACT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, message })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    responseMsg.style.color = 'green';
+                    responseMsg.textContent = data.message;
+                    contactForm.reset();
+                } else {
+                    responseMsg.style.color = 'red';
+                    responseMsg.textContent = data.message;
+                }
+            })
+            .catch(err => console.error("Error sending message:", err));
+        });
+    }
+}
+
+// 6. UI UTILITIES
+function checkLoginState() {
+    const username = localStorage.getItem('username');
+    const loginLink = document.querySelector('.login-btn');
+    const displayUser = document.getElementById('display-username');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    if(username) {
+        if(loginLink) loginLink.textContent = "Hi, " + username;
+        if(displayUser) displayUser.textContent = username;
+        if(logoutBtn) {
+            logoutBtn.style.display = 'inline-block';
+            logoutBtn.onclick = () => {
+                localStorage.clear();
+                location.reload();
+            };
+        }
+    } else {
+        if(loginLink) loginLink.textContent = "Log in";
+        if(logoutBtn) logoutBtn.style.display = 'none';
+    }
+}
+
+// 7. DATA FETCHING
 function fetchDestinationsFromDB() {
     fetch(API_BASE_URL + '?action=read')
-        .then(response => {
-            if (!response.ok) throw new Error("API not found at " + API_BASE_URL);
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             destinations = data;
             loadDestinations(destinations);
         })
         .catch(error => {
             console.error('Error:', error);
-            gridContainer.innerHTML = '<p class="no-results">Could not load destinations. Check Console for details.</p>';
+            gridContainer.innerHTML = '<p class="no-results">Could not load destinations.</p>';
         });
 }
 
-// 6. RENDER & FILTER FUNCTIONS
 function loadDestinations(data) {
     gridContainer.innerHTML = '';
     if (data.length === 0) {
@@ -189,9 +319,8 @@ function loadDestinations(data) {
     data.forEach(place => {
         const card = document.createElement('article');
         card.className = 'card';
-        const imgSrc = place.image_url || place.image;
+        const imgSrc = place.image_url ? place.image_url : 'https://via.placeholder.com/300';
         
-        // Added style="cursor:pointer" to make the whole card clickable for booking if you want
         card.innerHTML = `
              <div class="card-img"><img src="${imgSrc}" alt="${place.title}"></div>
              <div class="card-content">
@@ -215,29 +344,19 @@ function filterDestinations() {
     loadDestinations(filtered);
 }
 
-// 7. BOOKING LOGIC (LocalStorage)
+// 8. BOOKING LOGIC
 function bookTrip(tripId) {
-    // Check if user is logged in first!
     const userId = localStorage.getItem('user_id');
     
     if(!userId) {
-        // REMOVED ALERT: alert("Please Log In to book a trip!");
-        
-        // Directly find the Modal and open it
         const modal = document.getElementById("loginModal");
         if(modal) {
             modal.style.display = "block";
-            // Set a friendly message so they know why it opened
-            const msg = document.getElementById("login-message") || document.getElementById("login-error");
+            const msg = document.getElementById("login-message");
             if(msg) {
                 msg.textContent = "Please log in to book a trip.";
-                msg.style.color = "#F2994A"; // Orange accent color
+                msg.style.color = "#F2994A"; 
             }
-        } else {
-            // Fallback just in case
-            console.error("Could not find loginModal. Trying button click...");
-            const loginBtn = document.querySelector(".login-btn");
-            if(loginBtn) loginBtn.click(); 
         }
         return;
     }
@@ -257,9 +376,11 @@ function bookTrip(tripId) {
 }
 
 function cancelBooking(tripId) {
-    bookedTrips = bookedTrips.filter(t => t.id != tripId);
-    saveTripsToLocalStorage(); 
-    renderBookedTrips();
+    if(confirm("Are you sure you want to cancel this booking?")) {
+        bookedTrips = bookedTrips.filter(t => t.id != tripId);
+        saveTripsToLocalStorage(); 
+        renderBookedTrips();
+    }
 }
 
 function renderBookedTrips() {
@@ -272,7 +393,7 @@ function renderBookedTrips() {
         const div = document.createElement('div');
         div.className = 'booked-card';
         div.innerHTML = `
-            <div class="booked-info"><h4>${trip.title}</h4><p>$${trip.price}</p></div>
+            <div class="booked-info"><h4>${trip.title}</h4><p>₱${trip.price}</p></div>
             <button class="cancel-btn" onclick="cancelBooking(${trip.id})">Cancel</button>
         `;
         myTripsContainer.appendChild(div);
