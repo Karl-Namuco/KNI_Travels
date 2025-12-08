@@ -219,14 +219,19 @@ nav a:hover {
 
 /*4. HERO SECTION*/
 #heropage {
-    /* Important: Use flex here to override any JS 'block' issues */
-    display: flex; 
+    display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 80px 5%;
     min-height: 80vh;
-}
 
+    /* --- NEW: Map Grid Pattern --- */
+    background-color: #ffffff;
+    background-image: radial-gradient(#38b6ff 0.8px, transparent 0.8px), radial-gradient(#38b6ff 0.8px, #ffffff 0.8px);
+    background-size: 30px 30px; /* Space between dots */
+    background-position: 0 0, 15px 15px;
+    opacity: 1;
+}
 .hero-content {
     flex: 1;
     max-width: 50%;
@@ -541,3 +546,14 @@ nav a.active-link::after {
     background-color: var(--accent-yellow);
     border-radius: 2px;
 }
+
+/*hero page slideshow*/
+.hero-main-img {
+    transition: opacity 0.8s ease-in-out; 
+    opacity: 1; 
+}
+
+.fade-out {
+    opacity: 0;
+}
+

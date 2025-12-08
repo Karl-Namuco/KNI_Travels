@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // A. Initialize Tabs (Show Hero by default)
     setupTabNavigation();
-
+    startHeroSlideshow();
     // B. Load Data
     fetchDestinationsFromDB();
     renderBookedTrips(); 
@@ -398,6 +398,40 @@ function renderBookedTrips() {
         `;
         myTripsContainer.appendChild(div);
     });
+}
+
+//HERO SLIDESHOW
+function startHeroSlideshow() {
+    const imgElement = document.getElementById('slideshow-img');
+    
+    const images = [
+        '/assets/hero1.jpg',
+        '/assets/hero2.jpg', 
+        '/assets/hero3.jpg',
+        '/assets/hero4.jpg',
+        '/assets/hero5.jpg',
+        '/assets/hero6.jpg',
+        '/assets/hero7.jpg',
+        '/assets/hero8.jpg'
+    ];
+
+    let currentIndex = 0;
+
+    setInterval(() => {
+        if(!imgElement) return;
+
+        imgElement.classList.add('fade-out');
+
+        setTimeout(() => {
+            currentIndex = (currentIndex + 1) % images.length;
+            imgElement.src = images[currentIndex];
+
+            imgElement.onload = () => {
+                imgElement.classList.remove('fade-out');
+            };
+        }, 800);
+        
+    }, 2800); 
 }
 
 function saveTripsToLocalStorage() { localStorage.setItem('bookedTrips', JSON.stringify(bookedTrips)); }
