@@ -405,7 +405,7 @@ function startHeroSlideshow() {
     const imgElement = document.getElementById('slideshow-img');
     
     const images = [
-        '/assets/hero1.jpg',
+        '/assets/hero1.jpg', //REMOVE '/' KAPAG IRURUN USING XAMPP (localhost) magiging  'assets/hero1.jpg' nalang
         '/assets/hero2.jpg', 
         '/assets/hero3.jpg',
         '/assets/hero4.jpg',
