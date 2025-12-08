@@ -421,14 +421,14 @@ function startHeroSlideshow() {
     const imgElement = document.getElementById('slideshow-img');
     
     const images = [
-        '../assets/hero1.jpg', //REMOVE '/' KAPAG IRURUN USING XAMPP (localhost) magiging  'assets/hero1.jpg' nalang
-        '../assets/hero2.jpg', 
-        '../assets/hero3.jpg',
-        '../assets/hero4.jpg',
-        '../assets/hero5.jpg',
-        '../assets/hero6.jpg',
-        '../assets/hero7.jpg',
-        '../assets/hero8.jpg'
+        'assets/hero1.jpg', //REMOVE '/' KAPAG IRURUN USING XAMPP (localhost) magiging  'assets/hero1.jpg' nalang
+        'assets/hero2.jpg', 
+        'assets/hero3.jpg',
+        'assets/hero4.jpg',
+        'assets/hero5.jpg',
+        'assets/hero6.jpg',
+        'assets/hero7.jpg',
+        'assets/hero8.jpg'
     ];
 
     let currentIndex = 0;
