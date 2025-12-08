@@ -7,9 +7,9 @@ const myTripsContainer = document.getElementById('myttrips');
 
 // --- API CONFIGURATION ---
 const API_BASE_URL = 'backend/api.php'; 
-const AUTH_URL = 'backend/auth.php'; 
-const REGISTER_URL = 'backend/register.php';
-const CONTACT_URL = 'backend/contact.php';
+const LOGIN_URL    = 'backend/login.php'; 
+const REGISTER_URL = 'backend/auth.php';  
+const CONTACT_URL  = 'backend/contact.php';
 
 // 2. MAIN INITIALIZATION
 document.addEventListener('DOMContentLoaded', () => {
@@ -125,6 +125,7 @@ function setupMissionVision() {
 }
 
 // 4. AUTHENTICATION LOGIC
+// 4. AUTHENTICATION LOGIC
 function setupAuthentication() {
     const modal = document.getElementById("loginModal");
     const loginBtn = document.querySelector(".login-btn"); 
@@ -164,6 +165,7 @@ function setupAuthentication() {
         });
     }
 
+    // --- FIX 1: LOGIN LOGIC ---
     if(loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -171,7 +173,8 @@ function setupAuthentication() {
             const password = document.getElementById("login-password").value;
             const msg = document.getElementById("login-message");
 
-            fetch(AUTH_URL, { 
+            // USE LOGIN_URL HERE
+            fetch(LOGIN_URL, { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -185,16 +188,17 @@ function setupAuthentication() {
                     if (data.user) {
                         localStorage.setItem('user_id', data.user.id);
                         localStorage.setItem('username', data.user.username);
-                    } else {
-                        localStorage.setItem('username', username);
-                        localStorage.setItem('user_id', 1); 
+                        localStorage.setItem('role', data.user.role); // Save role
                     }
                     
                     setTimeout(() => {
                         modal.style.display = "none";
                         checkLoginState(); 
-                        if(username.toLowerCase() === 'admin') {
+                        // Redirect based on role from DB
+                        if(data.user && data.user.role === 'admin') {
                             window.location.href = "admin.html";
+                        } else {
+                            location.reload();
                         }
                     }, 1000);
                 } else {
@@ -202,10 +206,14 @@ function setupAuthentication() {
                     msg.textContent = data.message;
                 }
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                console.error(err);
+                msg.textContent = "Error: Check console (F12)";
+            });
         });
     }
 
+    // --- FIX 2: REGISTRATION LOGIC ---
     if(registerForm) {
         registerForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -213,6 +221,7 @@ function setupAuthentication() {
             const password = document.getElementById("reg-password").value;
             const msg = document.getElementById("reg-message");
 
+            // REGISTER_URL now correctly points to auth.php
             fetch(REGISTER_URL, { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -224,19 +233,26 @@ function setupAuthentication() {
                     msg.style.color = "green";
                     msg.textContent = "Account Created!";
                     setTimeout(() => {
+                        // Switch to login tab automatically
                         tabLogin.click(); 
                         const loginMsg = document.getElementById("login-message");
                         if(loginMsg) {
                             loginMsg.textContent = "Account created! Please log in.";
                             loginMsg.style.color = "green";
                         }
+                        // Clear inputs
+                        document.getElementById("reg-username").value = "";
+                        document.getElementById("reg-password").value = "";
                     }, 1500);
                 } else {
                     msg.style.color = "red";
                     msg.textContent = data.message;
                 }
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                console.error(err);
+                msg.textContent = "Error: Check console (F12)";
+            });
         });
     }
 }
