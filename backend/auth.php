@@ -2,59 +2,34 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-//mali pa conncetion nito
-// 1. Database Connection
-$host = "localhost"; 
-$db_name = "kni_travels";
-$username = "root";
-$password = "";
+header("Access-Control-Allow-Headers: Content-Type");
 
-try {
-    $conn = new PDO("mysql:host=$host;dbname=$db_name", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    echo json_encode(["success" => false, "message" => "Connection failed xd"]);
-    exit();
-}
+// INCLUDE THE CONNECTION FILE (This is the most important line)
+include 'db.php';
 
-// 2. Get Data
 $data = json_decode(file_get_contents("php://input"));
 
 if (isset($data->username) && isset($data->password)) {
-    $user = trim($data->username);
+    $user = $conn->real_escape_string(trim($data->username));
     $pass = trim($data->password);
 
-    if(empty($user) || empty($pass)) {
-        echo json_encode(["success" => false, "message" => "Please fill in all fields."]);
-        exit();
-    }
-
-    // 3. Check if User Already Exists
-    $checkQuery = "SELECT id FROM users WHERE username = :username";
-    $stmt = $conn->prepare($checkQuery);
-    $stmt->bindParam(":username", $user);
-    $stmt->execute();
-
-    if ($stmt->rowCount() > 0) {
-        echo json_encode(["success" => false, "message" => "Username already taken."]);
+    // Check User
+    $check = $conn->query("SELECT id FROM users WHERE username = '$user'");
+    if ($check->num_rows > 0) {
+        echo json_encode(["success" => false, "message" => "Username taken."]);
     } else {
-        // 4. Create New User
-        // Hash the password! Never store plain text.
-        $hashed_password = password_hash($pass, PASSWORD_DEFAULT);
-
-        $insertQuery = "INSERT INTO users (username, password) VALUES (:username, :password)";
-        $insertStmt = $conn->prepare($insertQuery);
-        $insertStmt->bindParam(":username", $user);
-        $insertStmt->bindParam(":password", $hashed_password);
-
-        if ($insertStmt->execute()) {
-            echo json_encode(["success" => true, "message" => "Registration successful! You can now log in."]);
+        // Create User
+        $hashed = password_hash($pass, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO users (username, password, role) VALUES ('$user', '$hashed', 'user')";
+        
+        if ($conn->query($sql) === TRUE) {
+            echo json_encode(["success" => true, "message" => "Account created!"]);
         } else {
-            echo json_encode(["success" => false, "message" => "Error creating account."]);
+            echo json_encode(["success" => false, "message" => "DB Error: " . $conn->error]);
         }
     }
 } else {
     echo json_encode(["success" => false, "message" => "Incomplete data."]);
 }
+$conn->close();
 ?>
