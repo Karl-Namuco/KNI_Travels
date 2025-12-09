@@ -447,7 +447,7 @@ function startHeroSlideshow() {
             };
         }, 800);
         
-    }, 2800); 
+    }, 4000); 
 }
 
 function saveTripsToLocalStorage() { localStorage.setItem('bookedTrips', JSON.stringify(bookedTrips)); }
