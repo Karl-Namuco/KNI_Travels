@@ -445,7 +445,7 @@ function startHeroSlideshow() {
             imgElement.onload = () => {
                 imgElement.classList.remove('fade-out');
             };
-        }, 800);
+        }, 550);
         
     }, 4000); 
 }
