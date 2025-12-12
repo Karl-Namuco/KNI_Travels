@@ -71,10 +71,35 @@
       </section>
 
       <section id="profilepage">
-        <h2>Profile</h2>
-        <div class="profile-container" style="max-width:600px; margin:0 auto; background:white; padding:20px; border-radius:15px; text-align:center;">
-             <p>Welcome, <span id="display-username">Guest</span>!</p>
-             <button id="logout-btn" style="display:none; margin-top:10px; padding:10px 20px; background:#dc3545; color:white; border:none; border-radius:5px; cursor:pointer;">Log Out</button>
+        <h2>My Profile</h2>
+        
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="avatar-circle">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <h3 id="profile-username">Guest User</h3>
+                <span class="role-badge" id="profile-role">Traveler</span>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <strong id="stat-trips">0</strong>
+                    <span>Trips Booked</span>
+                </div>
+                <div class="stat-item">
+                    <strong style="color: #27ae60;">Active</strong>
+                    <span>Account Status</span>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <button id="logout-btn-profile" class="logout-btn-styled">
+                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
+                </button>
+            </div>
         </div>
       </section>
 
@@ -101,12 +126,18 @@
     <footer id="footer">
       <div class="footer-links">
         <a href="#">Copyright Information</a>
-        <a href="#">About Us</a>
-        <a href="#">Developer Team</a>
+        <a href="#" id="aboutUsBtn">About us</a>
+        
+        <div class="footer-dropdown">
+            <span class="dropdown-trigger">Developer Team <i class="fa-solid fa-caret-down"></i></span>
+            <div class="dropdown-content">
+                <a href="profile1.html" target="_blank">Karl Namuco</a>
+                <a href="profile2.html" target="_blank">Nero De Paz</a>
+                <a href="profile3.html" target="_blank">Ia Mary Sorio</a>
+                </div>
+        </div>
+
         <a href="#" id="missionBtn">Mission & Vision</a>
-      </div>
-      <div class="socials">
-        <p>Facebook | Instagram</p>
       </div>
     </footer>
 
@@ -143,6 +174,33 @@
         </form>
       </div>
     </div>
+    <div id="bookingModal" class="modal">
+  <div class="modal-content" style="text-align: left; max-width: 500px;">
+    <span class="close-booking">&times;</span>
+    
+    <h2><i class="fa-solid fa-ticket"></i> Confirm Booking</h2>
+    <div style="margin: 20px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 15px 0;">
+        <h3 id="modal-trip-title" style="color: var(--primary-blue); margin-bottom: 5px;">Destination Name</h3>
+        <p style="color: #666; font-size: 0.9rem;">Price per person: <span id="modal-base-price" style="font-weight:bold;">₱0.00</span></p>
+    </div>
+
+    <div class="form-group" style="display: block; margin-bottom: 20px;">
+        <label style="font-weight: 600; display: block; margin-bottom: 8px;">Number of Tickets:</label>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button type="button" onclick="updateTickets(-1)" style="padding: 5px 15px; border-radius: 5px; border: 1px solid #ccc;">-</button>
+            <input type="number" id="ticket-count" value="1" min="1" style="width: 60px; text-align: center; font-weight: bold;" readonly>
+            <button type="button" onclick="updateTickets(1)" style="padding: 5px 15px; border-radius: 5px; border: 1px solid #ccc;">+</button>
+        </div>
+    </div>
+
+    <div style="background-color: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: right;">
+        <span style="font-size: 1.1rem; color: #333;">Total Price:</span>
+        <h2 id="modal-total-price" style="color: #F2994A; margin: 0;">₱0.00</h2>
+    </div>
+
+    <button id="confirm-booking-btn" class="modal-login-btn">Confirm & Pay</button>
+  </div>
+  </div>
 
     <script src="script.js"></script>
   </body>

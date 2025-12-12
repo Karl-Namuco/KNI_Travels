@@ -14,16 +14,17 @@ const CONTACT_URL  = 'backend/contact.php';
 // 2. MAIN INITIALIZATION
 document.addEventListener('DOMContentLoaded', () => {
     
-    // A. Initialize Tabs (Show Hero by default)
+    // A. Initialize Tabs
     setupTabNavigation();
     startHeroSlideshow();
     // B. Load Data
     fetchDestinationsFromDB();
     renderBookedTrips(); 
-    setupMissionVision();
+    setupFooter();
     setupAuthentication(); 
     setupContactForm();
     checkLoginState();
+    loadProfileData();
 
     // C. Setup Search
     const searchInput = document.getElementById('search-input');
@@ -111,9 +112,10 @@ function setupTabNavigation() {
     switchTab('home');
 }
 
-// 3. MISSION & VISION 
-function setupMissionVision() {
+// 3. footer
+function setupFooter() {
     const missionBtn = document.getElementById("missionBtn");
+    const aboutUsBtn = document.getElementById("aboutUsBtn");
     if(missionBtn) {
         missionBtn.addEventListener("click", function(event) {
             event.preventDefault();
@@ -122,9 +124,15 @@ function setupMissionVision() {
             alert(mission + "\n\n" + vision);
         });
     }
+    if(aboutUsBtn) {
+        aboutUsBtn.addEventListener("click", function(event) {
+            event.preventDefault();
+            const aboutus = "KNI Travels is a fictional travel service business that helps the users to make their trip planning safer, easier, faster, and more enjoyable. The company provides travel packages and services, guides, and booking assistance to help the users with their travels. By using a web application to promote and deliver its services, KNI Travels aims to provide a convenient and reliable platform where users can explore destinations, plan trips, and book travel services easier all in one place.";
+            alert(aboutus);
+        });
+    }
 }
 
-// 4. AUTHENTICATION LOGIC
 // 4. AUTHENTICATION LOGIC
 function setupAuthentication() {
     const modal = document.getElementById("loginModal");
@@ -361,61 +369,197 @@ function filterDestinations() {
 }
 
 // 8. BOOKING LOGIC
+let currentTripId = null;
+let currentBasePrice = 0;
+
+// Aopen pop up
 function bookTrip(tripId) {
     const userId = localStorage.getItem('user_id');
     
+    // Check  if logged in
     if(!userId) {
-        const modal = document.getElementById("loginModal");
-        if(modal) {
-            modal.style.display = "block";
-            const msg = document.getElementById("login-message");
-            if(msg) {
-                msg.textContent = "Please log in to book a trip.";
-                msg.style.color = "#F2994A"; 
-            }
+        const loginModal = document.getElementById("loginModal");
+        if(loginModal) {
+            loginModal.style.display = "block";
+            document.getElementById("login-message").textContent = "Please log in to book.";
         }
         return;
     }
 
+    // trip details
     const trip = destinations.find(t => t.id == tripId);
     if (!trip) return;
 
-    if (bookedTrips.some(t => t.id == tripId)) {
-        alert(`You already booked ${trip.title}.`);
-        return;
-    }
+    currentTripId = tripId;
+    currentBasePrice = parseFloat(trip.price);
 
-    bookedTrips.push(trip);
-    saveTripsToLocalStorage(); 
-    renderBookedTrips();
-    alert(`✅ Successfully booked ${trip.title}!`);
+    // Populate pop up
+    document.getElementById("modal-trip-title").textContent = trip.title;
+    document.getElementById("modal-base-price").textContent = "₱" + currentBasePrice.toLocaleString();
+    
+    // Reset Tickets to 1
+    document.getElementById("ticket-count").value = 1;
+    calculateTotal();
+
+    // pop up
+    document.getElementById("bookingModal").style.display = "block";
 }
 
-function cancelBooking(tripId) {
-    if(confirm("Are you sure you want to cancel this booking?")) {
-        bookedTrips = bookedTrips.filter(t => t.id != tripId);
-        saveTripsToLocalStorage(); 
-        renderBookedTrips();
-    }
+//Calculator
+function updateTickets(change) {
+    const input = document.getElementById("ticket-count");
+    let count = parseInt(input.value) + change;
+    if (count < 1) count = 1; // Minimum 1 ticket
+    input.value = count;
+    calculateTotal();
 }
 
-function renderBookedTrips() {
-    myTripsContainer.innerHTML = ''; 
-    if (bookedTrips.length === 0) {
-        myTripsContainer.innerHTML = '<p class="empty-message">You have no active bookings.</p>';
-        return;
-    }
-    bookedTrips.forEach(trip => {
-        const div = document.createElement('div');
-        div.className = 'booked-card';
-        div.innerHTML = `
-            <div class="booked-info"><h4>${trip.title}</h4><p>₱${trip.price}</p></div>
-            <button class="cancel-btn" onclick="cancelBooking(${trip.id})">Cancel</button>
-        `;
-        myTripsContainer.appendChild(div);
+function calculateTotal() {
+    const count = parseInt(document.getElementById("ticket-count").value);
+    const total = count * currentBasePrice;
+    document.getElementById("modal-total-price").textContent = "₱" + total.toLocaleString(undefined, {minimumFractionDigits: 2});
+}
+
+//Confirm Booking
+document.getElementById("confirm-booking-btn").addEventListener("click", function() {
+    const count = parseInt(document.getElementById("ticket-count").value);
+    const total = count * currentBasePrice;
+    const userId = localStorage.getItem('user_id');
+
+    document.getElementById("bookingModal").style.display = "none";
+
+    fetch(API_BASE_URL + '?action=book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            user_id: userId, 
+            trip_id: currentTripId,
+            total_price: total //computed total
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success) {
+            alert(data.message + "\nTotal Paid: ₱" + total.toLocaleString());
+            location.reload(); 
+        } else {
+            alert("Error: " + data.message);
+        }
+    })
+    .catch(err => {
+        console.error(err);
     });
+});
+
+// D. Close Modal Logic
+const bookingModal = document.getElementById("bookingModal");
+const closeBooking = document.querySelector(".close-booking");
+if(closeBooking) {
+    closeBooking.onclick = () => bookingModal.style.display = "none";
+}
+// Close when clicking outside
+window.onclick = (e) => {
+    if(e.target == bookingModal) bookingModal.style.display = "none";
+    const loginModal = document.getElementById("loginModal");
+    if(e.target == loginModal) loginModal.style.display = "none";
+};
+
+// get bookings from database
+function renderBookedTrips() {
+    const userId = localStorage.getItem('user_id');
+    const container = document.getElementById('myttrips');
+    if (!userId) {
+        container.innerHTML = '<p class="empty-message">Please log in to view your trips.</p>';
+        return;
+    }
+
+    //get bookings
+    fetch(API_BASE_URL + `?action=get_user_bookings&user_id=${userId}`)
+        .then(res => res.json())
+        .then(data => {
+            container.innerHTML = '';
+
+            if (data.length === 0) {
+                container.innerHTML = '<p class="empty-message">You have no active bookings.</p>';
+                return;
+            }
+
+            // load
+            data.forEach(trip => {
+                const div = document.createElement('div');
+                div.className = 'booked-card';
+                div.innerHTML = `
+                    <div class="booked-info">
+                        <h4>${trip.trip_title}</h4>
+                        <p>Total: ₱${parseFloat(trip.trip_price).toLocaleString()}</p>
+                        <small style="color:#888">Date: ${trip.booking_date}</small>
+                    </div>
+                    <button class="cancel-btn" onclick="cancelBooking(${trip.id})">Cancel</button>
+                `;
+                container.appendChild(div);
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            container.innerHTML = '<p class="empty-message">Error loading trips.</p>';
+        });
 }
 
+//Cancel Booking
+function cancelBooking(bookingId) {
+    if(confirm("Are you sure you want to cancel this booking?")) {
+        fetch(API_BASE_URL + "?action=delete_booking", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: bookingId })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+            renderBookedTrips();
+        });
+    }
+}
+//PROFILE PAGE
+function loadProfileData() {
+    const username = localStorage.getItem('username');
+    const role = localStorage.getItem('role');
+    const userId = localStorage.getItem('user_id');
+
+    // UI Elements
+    const nameEl = document.getElementById('profile-username');
+    const roleEl = document.getElementById('profile-role');
+    const statsEl = document.getElementById('stat-trips');
+    const logoutBtn = document.getElementById('logout-btn-profile');
+
+    if (username) {
+        nameEl.textContent = username;
+        roleEl.textContent = role === 'admin' ? 'Administrator' : 'Explorer';
+        
+        fetch(API_BASE_URL + `?action=get_user_bookings&user_id=${userId}`)
+            .then(res => res.json())
+            .then(data => {
+                const count = Array.isArray(data) ? data.length : 0;
+                statsEl.textContent = count;
+            });
+
+        // Activate Logout Button
+        if(logoutBtn) {
+            logoutBtn.onclick = () => {
+                if(confirm("Are you sure you want to log out?")) {
+                    localStorage.clear();
+                    location.reload();
+                }
+            };
+        }
+    } else {
+        // If not logged in
+        nameEl.textContent = "Guest User";
+        roleEl.textContent = "Visitor";
+        statsEl.textContent = "0";
+        if(logoutBtn) logoutBtn.style.display = 'none';
+    }
+}
 //HERO SLIDESHOW
 function startHeroSlideshow() {
     const imgElement = document.getElementById('slideshow-img');
@@ -449,6 +593,7 @@ function startHeroSlideshow() {
         
     }, 4000); 
 }
+
 
 function saveTripsToLocalStorage() { localStorage.setItem('bookedTrips', JSON.stringify(bookedTrips)); }
 function loadTripsFromLocalStorage() { return JSON.parse(localStorage.getItem('bookedTrips') || '[]'); }

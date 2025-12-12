@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nero Arbert De paz</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+        body {
+  font-family: 'Bebas Neue', sans-serif;
+  margin: 0;
+  background: #3a3939; 
+  color: #aaa9ad;
+  line-height: 1.6;
+}
+
+
+h1, h2, h3{
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 700;
+  color: #d1cedd;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 8px rgb(240, 148, 148);
+}
+
+
+h2::after {
+  content: " ★";
+  color: gold;
+  font-size: 1.2em;
+  margin-left: 5px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #080808;
+  padding: 15px 30px;
+  border-bottom: 2px solid #9b5959;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.8);
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.2));
+}
+
+header .logo {
+  font-size: 1.8rem;
+  font-family: 'Orbitron', sans-serif;
+  color: #a2a2a2;
+  text-shadow: 0 0 6px rgba(170,170,170,0.8);
+}
+
+
+nav {
+  display: flex;
+  justify-content: center; 
+  justify-content: space-around; 
+  
+}
+
+nav ul {
+  display: flex;
+  gap: 25px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+
+nav a {
+  color: #d0d0d0;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+nav a::after {
+  content: '';
+  display: block;
+  height: 2px;
+  width: 0;
+  background: #888;
+  transition: width 0.4s;
+  margin-top: 4px;
+}
+
+nav a:hover {
+  color: #fff;
+  text-shadow: 0 0 6px rgba(255,255,255,0.6);
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+
+main {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+section, aside {
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+
+section, aside {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+section::before, aside::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0); 
+  transition: all 0.3s ease;
+  pointer-events: none; 
+}
+
+section:hover, aside:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.8);
+}
+
+section:hover::before, aside:hover::before {
+  background: rgba(255, 255, 255, 0.05);
+  filter: blur(3px);
+}
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: #1c1c1c;
+  border: 1px solid #555;
+  border-radius: 6px;
+  overflow: hidden;
+  color: #ddd;
+}
+
+table th {
+  background: #222;
+  color: #bbb;
+  text-transform: uppercase;
+}
+
+table td, table th {
+  padding: 12px 15px;
+  border-bottom: 1px solid #333;
+  vertical-align: top;
+}
+
+table tr:last-child td {
+  border-bottom: none;
+}
+
+table img {
+  border-radius: 50%;
+  width: 160px;
+  height: 160px;
+  object-fit: cover;   
+  border: 1px solid #666;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+table img:hover, .profile-img:hover {
+  transform: scale(1.2) rotate(360deg);
+  transition: transform 0.4s ease;
+  box-shadow: 0 0 8px rgba(255,255,255,0.6);
+  filter: grayscale(50%) brightness(1.2);
+}
+
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+input, button, textarea {
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background: #121212;
+  color: #ddd;
+}
+
+input:focus, textarea:focus {
+  border-color: #888;
+  box-shadow: 0 0 6px rgba(136,136,136,0.7);
+  outline: none;
+}
+
+button {
+  background: #444;
+  color: #eee;
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background: #666;
+  transform: scale(1.05);
+}
+
+
+details {
+  margin-top: 10px;
+  background: #1c1c1c;
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: bold;
+  color: #ccc;
+}
+
+details[open] summary {
+  color: #fff;
+  text-shadow: 0 0 4px rgba(255,255,255,0.6);
+}
+
+
+iframe {
+  display: block;
+  width: 100%;
+  height: 315px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  margin-top: 15px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.7);
+}
+
+
+footer {
+  background: #0f0f0f;
+  color: #aaa;
+  text-align: center;
+  padding: 18px 0;
+  border-top: 1px solid #555;
+}
+
+footer a {
+  margin: 0 10px;
+  color: #ccc;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #eee;
+  text-shadow: 0 0 4px rgba(255,255,255,0.5);
+}
+
+
+@media (max-width: 768px) {
+  main {
+    grid-template-columns: 1fr;
+  }
+  nav ul {
+    flex-direction: column;
+    gap: 12px;
+  }
+  table img {
+    width: 120px;   
+    height: 120px;
+  }
+  iframe {
+    height: 200px;
+  }
+@media print {
+  nav, footer {
+    display: none;
+  }
+  body {
+    font-size: 12pt;
+    color: black;
+  }
+}
+
+}
+    </style>
+
+  </head>
+  <body>
+    <header>
+      <h1>Developer's Profile</h1>
+      <p data-role="student">Bachelor of Science in Information Technology</p>
+    </header>
+
+    <nav>
+      <a href="#biography">Biography</a> <a href="#hobbies">Hobbies</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <main>
+      <article>
+        <section id="biography">
+          <h2>Biography</h2>
+          <table>
+            <tr>
+              <td>
+                <picture>
+                  <source media="(min-width: 650px)" srcset="assets/nero.jpg" />
+                  <source media="(min-width: 400px)" srcset="assets/nero.jpg" />
+                  <img
+                    src="assets/nero.jpg"
+                    alt="Nero Arbert D. de Paz"
+                    width="100%"
+                  />
+                </picture>
+              </td>
+              <td>
+                <h3>Nero Arbert D. de Paz</h3>
+                <p>
+                  My name is Nero Arbert D. de Paz, I am 20 years old. Currently
+                  pursuing a Bachelor of Science in Information Technology at
+                  The Technological University of the Philippines.
+                </p>
+                <ul>
+                  <li>
+                    <strong>Educational Background:</strong>
+                    <ul>
+                      <li>Elementary: Pamplona Elementary School Unit-1</li>
+                      <li>High School: Las Piñas North National High School</li>
+                      <li>
+                        College: The Technological University of the Philippines
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </table>
+        </section>
+      </article>
+
+      <section id="hobbies" data-interest="gaming">
+        <h2>Hobbies</h2>
+        <ul>
+          <li>Playing Video Games</li>
+          <li>Reading Manga</li>
+          <li>Listening to Music</li>
+          <li>Ragebaiting</li>
+        </ul>
+        <aside>
+          <p>
+            Favorite Video Games: League of Legends, Wild Rift, Devil May Cry,
+            and Valorant
+          </p>
+        </aside>
+
+        <details>
+          <summary>Highest Rank on Games</summary>
+          <ul>
+            <li>League of Legend : Diamond 4</li>
+            <li>Wild Rift : Master 2</li>
+            <li>Valorant : Gold 3</li>
+          </ul>
+        </details>
+      </section>
+
+      <section id="contact">
+        <h2>Contact Me</h2>
+        <form>
+          <label for="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="you@example.com"
+            required
+          /><br />
+
+          <label for="phone">Phone Number:</label>
+          <input
+            type="tel"
+            id="phone"
+            placeholder="0998-242-9472"
+            pattern="09[0-9]{9}"
+            required
+          /><br />
+
+          <label for="date">Preferred Contact Date:</label>
+          <input type="date" id="date" required /><br />
+
+          <label for="color">Favorite Color:</label>
+          <input type="color" id="color" /><br />
+
+          <label for="message">Message:</label><br />
+          <textarea
+            id="message"
+            placeholder="Your message here..."
+            required
+          ></textarea
+          ><br />
+
+          <button type="submit">Send</button>
+        </form>
+      </section>
+      <section id="videos">
+        <h3>AESPA</h3>
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/jWQx2f-CErU?si=x7V-0IGWyoKn0STH"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      </section>
+    </main>
+
+    <footer>
+      <p>Connect with me:</p>
+      <a href="#"><i class="fa-brands fa-youtube"></i></a>
+      <a href="#"><i class="fa-brands fa-facebook"></i></a>
+      <a href="#"><i class="fa-brands fa-twitter"></i></a>
+    </footer>
+
+  </body>
+</html>

@@ -6,7 +6,6 @@
     <title>KNI Admin Panel</title>
 
     <link rel="stylesheet" href="style.css" />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
@@ -18,8 +17,10 @@
 
     <style>
       /* --- ADMIN SPECIFIC STYLES --- */
-      /* These sit on top of your main style.css to handle the forms */
-
+      html {
+        scroll-behavior: smooth; /* This makes the nav scroll smoothly */
+      }
+      
       body {
         background-color: var(--bg-white);
         padding-bottom: 50px;
@@ -35,7 +36,11 @@
       }
 
       .admin-section {
-        margin-bottom: 40px;
+        margin-bottom: 60px; /* More space between sections for scrolling */
+        padding-top: 80px;   /* Offset for sticky header */
+        margin-top: -80px;   /* Offset logic */
+        border-bottom: 1px solid #eee;
+        padding-bottom: 40px;
       }
 
       .admin-section h2 {
@@ -63,7 +68,7 @@
         width: 100%;
         padding: 12px 20px;
         border: 1px solid #ccc;
-        border-radius: 50px; /* Pill shape matches your search bar */
+        border-radius: 50px;
         font-family: var(--font-body);
         outline: none;
         transition: border-color 0.3s;
@@ -108,7 +113,6 @@
         padding: 8px 15px !important;
       }
 
-      /* Override button styles for Admin */
       .admin-btn {
         background-color: var(--primary-blue);
         color: white;
@@ -126,17 +130,17 @@
       }
 
       .btn-add {
-        background-color: var(--accent-yellow); /* Yellow for primary action */
+        background-color: var(--accent-yellow);
         color: var(--text-dark);
         width: 100%;
         font-size: 1.1rem;
         padding: 15px;
       }
-      /* Add this to your style block */
+      
       .btn-delete {
-        background-color: #dc3545 !important; /* Red color */
+        background-color: #dc3545 !important;
         margin-left: 5px;
-        padding: 10px 15px !important; /* Slightly smaller horizontal padding */
+        padding: 10px 15px !important;
       }
 
       .btn-delete:hover {
@@ -149,51 +153,57 @@
       <div class="logo">
         <h1 class="KNI">KNI Travels</h1>
       </div>
+      
+      <nav>
+        <ul>
+          <li><a href="#section-add">Add Destination</a></li>
+          <li><a href="#section-manage">Manage</a></li>
+          <li><a href="#section-bookings">Bookings</a></li>
+          <li><a href="#section-messages">Messages</a></li>
+        </ul>
+      </nav>
+
       <div class="nav-extras">
-        <span style="font-weight: 600; color: #666">Administrator Mode</span>
-        <a
-          href="index.html"
-          class="login-btn"
-          style="color: var(--primary-blue)"
-        >
-          <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout / Home
+        <span style="font-weight: 600; color: #666; margin-right: 15px;">Administrator Mode</span>
+        <a href="index.html" class="login-btn" style="color: var(--primary-blue)">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
         </a>
       </div>
     </header>
 
     <main>
       <div class="admin-container">
-        <div class="admin-section">
+        
+        <div id="section-add" class="admin-section">
           <h2><i class="fa-solid fa-plus-circle"></i> Add New Destination</h2>
           <div class="form-group">
-            <input
-              type="text"
-              id="new-title"
-              placeholder="Destination Title (e.g. Hidden Valley)"
-            />
-            <input
-              type="text"
-              id="new-location"
-              placeholder="Location (e.g. Palawan, PH)"
-            />
+            <input type="text" id="new-title" placeholder="Destination Title (e.g. Hidden Valley)" />
+            <input type="text" id="new-location" placeholder="Location (e.g. Palawan, PH)" />
             <input type="number" id="new-price" placeholder="Price (₱)" />
             <div class="full-width">
-              <input
-                type="text"
-                id="new-image"
-                placeholder="Image URL (https://...)"
-              />
+              <input type="text" id="new-image" placeholder="Image URL (https://...)" />
             </div>
           </div>
-          <button class="admin-btn btn-add" onclick="addDestination()">
-            Add to Database
-          </button>
+          <button class="admin-btn btn-add" onclick="addDestination()">Add to Database</button>
         </div>
 
-        <div class="admin-section">
-          <h2><i class="fa-solid fa-list-check"></i> Manage Prices</h2>
+        <div id="section-manage" class="admin-section">
+          <h2><i class="fa-solid fa-list-check"></i> Manage Destinations</h2>
           <div id="admin-list"></div>
         </div>
+
+        <div id="section-bookings" class="admin-section">
+            <h2><i class="fa-solid fa-ticket"></i> Recent Bookings</h2>
+            <div id="booking-list">
+                </div>
+        </div>
+
+        <div id="section-messages" class="admin-section" style="border-bottom: none;">
+            <h2><i class="fa-solid fa-envelope"></i> Customer Messages</h2>
+            <div id="message-list">
+                </div>
+        </div>
+
       </div>
     </main>
 
@@ -204,7 +214,7 @@
     <script>
       const API_URL = "backend/api.php";
 
-      // 1. FETCH AND DISPLAY ITEMS
+      // 1. DISPLAY ITEMS
       function loadAdminItems() {
         fetch(API_URL + "?action=read")
           .then((res) => {
@@ -228,8 +238,8 @@
                                     <i class="fa-solid fa-rotate"></i> Update
                                 </button>
                                 <button class="admin-btn btn-delete" onclick="deleteDestination(${item.id})">
-        <i class="fa-solid fa-trash"></i>
-    </button>
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </div>
                         </div>
                     `;
@@ -260,8 +270,8 @@
         })
           .then((res) => res.json())
           .then((data) => {
-            alert("✅ " + data.message);
-            loadAdminItems(); // Refresh list
+            alert(data.message);
+            loadAdminItems();
 
             // Clear inputs
             document.getElementById("new-title").value = "";
@@ -282,21 +292,13 @@
         })
           .then((res) => res.json())
           .then((data) => {
-            alert("✅ " + data.message);
+            alert(data.message);
           });
       }
 
-      // Load items on startup
-      loadAdminItems();
-      // 4. DELETE DESTINATION
+      //DELETE DESTINATION
       function deleteDestination(id) {
-        // 1. Confirm with the user first so they don't delete by accident
-        if (
-          confirm(
-            "Are you sure you want to permanently delete this destination?"
-          )
-        ) {
-          // 2. Send request to backend
+        if (confirm("Are you sure you want to permanently delete this destination?")) {
           fetch(API_URL + "?action=delete", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -304,10 +306,7 @@
           })
             .then((res) => res.json())
             .then((data) => {
-              // 3. Show success message
-              alert("🗑️ " + data.message);
-
-              // 4. Refresh the list to remove the item from the screen
+              alert(data.message);
               loadAdminItems();
             })
             .catch((err) => {
@@ -316,6 +315,101 @@
             });
         }
       }
+
+      //LOAD BOOKINGS
+      function loadBookings() {
+        fetch(API_URL + "?action=read_bookings")
+          .then(res => res.json())
+          .then(data => {
+            const list = document.getElementById("booking-list");
+            list.innerHTML = "";
+            if(data.length === 0) {
+                list.innerHTML = "<p>No bookings yet.</p>";
+                return;
+            }
+            data.forEach(b => {
+                list.innerHTML += `
+                    <div class="item-row" style="border-left: 5px solid #F2994A;">
+                        <div class="item-info">
+                            <strong>${b.trip_title}</strong> <span style="color:#666">(${b.username})</span><br>
+                            <small>Price: ₱${b.trip_price} | Date: ${b.booking_date}</small>
+                        </div>
+                        <div class="item-actions">
+                            <button class="admin-btn btn-delete" onclick="deleteBooking(${b.id})">
+                                <i class="fa-solid fa-trash"></i> Cancel
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+          });
+      }
+
+      function deleteBooking(id) {
+          if(confirm("Are you sure you want to cancel this booking?")) {
+              fetch(API_URL + "?action=delete_booking", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ id: id })
+              })
+              .then(res => res.json())
+              .then(data => {
+                  alert(data.message);
+                  loadBookings(); 
+              });
+          }
+      }
+
+      //LOAD MESSAGES
+      function loadMessages() {
+        fetch(API_URL + "?action=read_messages")
+          .then(res => res.json())
+          .then(data => {
+            const list = document.getElementById("message-list");
+            list.innerHTML = "";
+            if(data.length === 0) {
+                list.innerHTML = "<p>No messages.</p>";
+                return;
+            }
+            data.forEach(msg => {
+                const statusColor = msg.status === 'Resolved' ? 'green' : 'red';
+                const btnDisplay = msg.status === 'Resolved' ? 'none' : 'inline-block';
+
+                list.innerHTML += `
+                    <div class="item-row" style="flex-direction:column; align-items:flex-start; gap:10px;">
+                        <div style="width:100%; display:flex; justify-content:space-between;">
+                            <strong>${msg.name} <span style="font-weight:400; font-size:0.9rem;">(${msg.email})</span></strong>
+                            <span style="color:${statusColor}; font-weight:bold; font-size:0.8rem;">${msg.status || 'Pending'}</span>
+                        </div>
+                        <p style="background:#f9f9f9; padding:10px; width:100%; border-radius:5px; margin:0;">"${msg.message}"</p>
+                        
+                        <div style="width:100%; text-align:right;">
+                            <button class="admin-btn" style="background-color:#27ae60; display:${btnDisplay};" onclick="resolveMessage(${msg.id})">
+                                <i class="fa-solid fa-check"></i> Mark as Resolved
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+          });
+      }
+
+      function resolveMessage(id) {
+          fetch(API_URL + "?action=resolve_message", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ id: id })
+          })
+          .then(res => res.json())
+          .then(data => {
+              alert(data.message);
+              loadMessages();
+          });
+      }
+
+      loadAdminItems();
+      loadBookings();
+      loadMessages();
     </script>
   </body>
 </html>
