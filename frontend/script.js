@@ -33,6 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if(searchInput) {
         searchInput.addEventListener('input', filterDestinations);
     }
+    const menuBtn = document.getElementById('mobile-menu');
+    const navElement = document.getElementById('navigation');
+
+    if(menuBtn) {
+        menuBtn.addEventListener('click', () => {
+            // This toggles the class that shows/hides the menu
+            navElement.classList.toggle('active');
+        });
+    }
 });
 
 // SWITCH TABS

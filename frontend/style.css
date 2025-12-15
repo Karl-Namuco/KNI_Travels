@@ -199,10 +199,38 @@ nav a:hover {
 
 
 /* Search and Login Area */
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    padding: 5px 15px;   
+    gap: 10px;           
+    transition: box-shadow 0.3s ease;
+}
+
+.search-container:hover,
+.search-container:focus-within {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-blue);
+}
+
 .nav-extras {
     display: flex;
     align-items: center;
     gap: 15px;
+}
+
+.nav-extras input {
+    border: none;       
+    outline: none;      
+    background: transparent;
+    padding: 5px 0;    
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    width: 200px;        
 }
 
 .nav-extras input {
@@ -732,4 +760,67 @@ nav a.active-link::after {
 
 .footer-dropdown:hover .dropdown-trigger {
     color: var(--primary-blue);
+}
+
+/* Mobile View */
+.menu-toggle {
+    display: none;
+}
+@media (max-width: 768px) {
+    /* Show the Hamburger Button */
+    .menu-toggle {
+        display: block;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: var(--primary-blue);
+    }
+    #navigation {
+        flex-wrap: wrap; 
+        height: auto;  
+        padding: 15px 5%;
+        position: sticky;
+        top: 0;
+    }
+
+    nav, .nav-extras {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 15px; 
+        gap: 15px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+        text-align: center;
+    }
+
+    #navigation.active nav, 
+    #navigation.active .nav-extras {
+        display: flex;
+    }
+    
+    /* Hero Fixes */
+    #heropage {
+        flex-direction: column-reverse;
+        padding-top: 20px;
+    }
+    .hero-content h1 { font-size: 2.5rem; }
+
+    .hero-content {
+        max-width: 100%;
+        margin-top: 20px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem; /* Make big text smaller for phones */
+    }
+
+    .hero-images {
+        padding-left: 0;
+        margin-bottom: 20px;
+    }
 }
