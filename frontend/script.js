@@ -6,10 +6,11 @@ const gridContainer = document.getElementById('destinations-grid');
 const myTripsContainer = document.getElementById('myttrips');
 
 // --- API CONFIGURATION ---
-const API_BASE_URL = 'backend/api.php'; 
-const LOGIN_URL    = 'backend/login.php'; 
-const REGISTER_URL = 'backend/auth.php';  
-const CONTACT_URL  = 'backend/contact.php';
+const API_BASE_URL = '../backend/api.php'; 
+const LOGIN_URL    = '../backend/login.php'; 
+const REGISTER_URL = '../backend/auth.php';  
+const CONTACT_URL  = '../backend/contact.php';
+const RESET_URL    = '../backend/reset_password.php';
 
 // 2. MAIN INITIALIZATION
 document.addEventListener('DOMContentLoaded', () => {
@@ -89,10 +90,20 @@ function setupTabNavigation() {
         });
     }
     // Nav Links
+    // Nav Links Click Listener
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+
+            // --- THE FIX: ALLOW ADMIN LINK TO WORK ---
+            // If the link goes to "admin.html", stop this function and let the browser load the page.
+            if (href === 'admin.html') {
+                return; // Do nothing, just let the link work naturally
+            }
+
+            // For all other links (Home, Travel, etc.), prevent the page from reloading
             e.preventDefault();
-            const targetId = link.getAttribute('href').substring(1); 
+            const targetId = href.substring(1); // Remove the '#'
             switchTab(targetId);
         });
     });
@@ -139,11 +150,20 @@ function setupAuthentication() {
     const loginBtn = document.querySelector(".login-btn"); 
     const closeSpan = document.querySelector(".close-btn");
     
+    // TABS
     const tabLogin = document.getElementById("tab-login");
     const tabRegister = document.getElementById("tab-register");
+    
+    // FORMS
     const loginForm = document.getElementById("loginForm");
     const registerForm = document.getElementById("registerForm");
+    const resetForm = document.getElementById("resetForm"); // NEW
 
+    // NEW LINKS
+    const forgotLink = document.getElementById("forgot-pass-link");
+    const backToLogin = document.getElementById("back-to-login");
+
+    // 1. OPEN MODAL LOGIC
     if(loginBtn) {
         loginBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -151,16 +171,28 @@ function setupAuthentication() {
                 alert("You are already logged in as " + localStorage.getItem('username'));
             } else {
                 modal.style.display = "block";
+                // Always reset to Login view when opening
+                if(loginForm) loginForm.style.display = "block";
+                if(registerForm) registerForm.style.display = "none";
+                if(resetForm) resetForm.style.display = "none";
+                
+                // Reset active tabs
+                if(tabLogin) tabLogin.classList.add("active-tab");
+                if(tabRegister) tabRegister.classList.remove("active-tab");
             }
         });
     }
+
+    // CLOSE MODAL LOGIC
     if(closeSpan) closeSpan.onclick = () => modal.style.display = "none";
     window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; };
 
+    // 2. TAB SWITCHING (Login vs Register)
     if(tabLogin && tabRegister) {
         tabLogin.addEventListener('click', () => {
             loginForm.style.display = "block";
             registerForm.style.display = "none";
+            if(resetForm) resetForm.style.display = "none"; // Hide reset
             tabLogin.classList.add("active-tab");
             tabRegister.classList.remove("active-tab");
         });
@@ -168,12 +200,70 @@ function setupAuthentication() {
         tabRegister.addEventListener('click', () => {
             loginForm.style.display = "none";
             registerForm.style.display = "block";
+            if(resetForm) resetForm.style.display = "none"; // Hide reset
             tabRegister.classList.add("active-tab");
             tabLogin.classList.remove("active-tab");
         });
     }
 
-    // --- FIX 1: LOGIN LOGIC ---
+    // 3. FORGOT PASSWORD LINKS (New Logic)
+    if(forgotLink) {
+        forgotLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.style.display = "none";
+            registerForm.style.display = "none";
+            resetForm.style.display = "block"; // Show reset form
+        });
+    }
+
+    if(backToLogin) {
+        backToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            resetForm.style.display = "none";
+            loginForm.style.display = "block";
+        });
+    }
+
+    // 4. RESET PASSWORD SUBMIT (New Logic)
+    if(resetForm) {
+        resetForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById("reset-username").value;
+            const newPassword = document.getElementById("reset-new-password").value;
+            const msg = document.getElementById("reset-message");
+
+            fetch(RESET_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, new_password: newPassword })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    msg.style.color = "green";
+                    msg.textContent = "Password updated! Please log in.";
+                    setTimeout(() => {
+                        // Clear form and go back to login
+                        document.getElementById("reset-username").value = "";
+                        document.getElementById("reset-new-password").value = "";
+                        msg.textContent = "";
+                        resetForm.style.display = "none";
+                        loginForm.style.display = "block";
+                    }, 2000);
+                } else {
+                    msg.style.color = "red";
+                    msg.textContent = data.message;
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                msg.textContent = "Error connecting to server.";
+                msg.style.color = "red";
+            });
+        });
+    }
+
+    // 5. LOGIN SUBMIT (Original Logic)
     if(loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -181,7 +271,6 @@ function setupAuthentication() {
             const password = document.getElementById("login-password").value;
             const msg = document.getElementById("login-message");
 
-            // USE LOGIN_URL HERE
             fetch(LOGIN_URL, { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -196,13 +285,12 @@ function setupAuthentication() {
                     if (data.user) {
                         localStorage.setItem('user_id', data.user.id);
                         localStorage.setItem('username', data.user.username);
-                        localStorage.setItem('role', data.user.role); // Save role
+                        localStorage.setItem('role', data.user.role);
                     }
                     
                     setTimeout(() => {
                         modal.style.display = "none";
                         checkLoginState(); 
-                        // Redirect based on role from DB
                         if(data.user && data.user.role === 'admin') {
                             window.location.href = "admin.html";
                         } else {
@@ -221,7 +309,7 @@ function setupAuthentication() {
         });
     }
 
-    // --- FIX 2: REGISTRATION LOGIC ---
+    // 6. REGISTER SUBMIT (Original Logic)
     if(registerForm) {
         registerForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -229,7 +317,6 @@ function setupAuthentication() {
             const password = document.getElementById("reg-password").value;
             const msg = document.getElementById("reg-message");
 
-            // REGISTER_URL now correctly points to auth.php
             fetch(REGISTER_URL, { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -241,8 +328,7 @@ function setupAuthentication() {
                     msg.style.color = "green";
                     msg.textContent = "Account Created!";
                     setTimeout(() => {
-                        // Switch to login tab automatically
-                        tabLogin.click(); 
+                        tabLogin.click(); // Switch to login tab
                         const loginMsg = document.getElementById("login-message");
                         if(loginMsg) {
                             loginMsg.textContent = "Account created! Please log in.";
@@ -251,6 +337,7 @@ function setupAuthentication() {
                         // Clear inputs
                         document.getElementById("reg-username").value = "";
                         document.getElementById("reg-password").value = "";
+                        msg.textContent = "";
                     }, 1500);
                 } else {
                     msg.style.color = "red";
@@ -299,14 +386,22 @@ function setupContactForm() {
 
 // 6. UI UTILITIES
 function checkLoginState() {
+    // 1. Get data from Local Storage
     const username = localStorage.getItem('username');
+    const role = localStorage.getItem('role'); // This was saved during login
+    
+    // 2. Get UI Elements
     const loginLink = document.querySelector('.login-btn');
     const displayUser = document.getElementById('display-username');
     const logoutBtn = document.getElementById('logout-btn');
+    const adminLink = document.getElementById('admin-nav-link'); // The new link
 
+    // 3. Logic
     if(username) {
+        // User is Logged In
         if(loginLink) loginLink.textContent = "Hi, " + username;
         if(displayUser) displayUser.textContent = username;
+        
         if(logoutBtn) {
             logoutBtn.style.display = 'inline-block';
             logoutBtn.onclick = () => {
@@ -314,9 +409,23 @@ function checkLoginState() {
                 location.reload();
             };
         }
+
+        // --- THE NEW ADMIN CHECK ---
+        if(role === 'admin') {
+            // If admin, show the link
+            if(adminLink) adminLink.style.display = 'block'; 
+        } else {
+            // If normal user, make sure it's hidden
+            if(adminLink) adminLink.style.display = 'none';
+        }
+
     } else {
+        // User is Logged Out
         if(loginLink) loginLink.textContent = "Log in";
         if(logoutBtn) logoutBtn.style.display = 'none';
+        
+        // Always hide admin link when logged out
+        if(adminLink) adminLink.style.display = 'none';
     }
 }
 
