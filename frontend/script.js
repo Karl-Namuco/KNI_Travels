@@ -12,6 +12,7 @@ const REGISTER_URL = '../backend/auth.php';
 const CONTACT_URL  = '../backend/contact.php';
 const RESET_URL    = '../backend/reset_password.php';
 
+
 // 2. MAIN INITIALIZATION
 document.addEventListener('DOMContentLoaded', () => {
     
@@ -225,34 +226,58 @@ function setupAuthentication() {
     }
 
     // 4. RESET PASSWORD SUBMIT (New Logic)
+    // 4. RESET PASSWORD SUBMIT (Updated with Recovery Code)
     if(resetForm) {
         resetForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const username = document.getElementById("reset-username").value;
+            const backupCode = document.getElementById("reset-code").value; // NEW FIELD
             const newPassword = document.getElementById("reset-new-password").value;
             const msg = document.getElementById("reset-message");
+
+            msg.textContent = "Verifying code...";
+            msg.style.color = "blue";
 
             fetch(RESET_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, new_password: newPassword })
+                body: JSON.stringify({ 
+                    username: username, 
+                    backup_code: backupCode, // Send the code
+                    new_password: newPassword 
+                })
             })
             .then(res => res.json())
             .then(data => {
                 if(data.success) {
                     msg.style.color = "green";
-                    msg.textContent = "Password updated! Please log in.";
+                    msg.textContent = "Success! Password reset.";
+                    
+                    // Optional: Disable button so they don't click twice
+                    resetForm.querySelector('button').disabled = true;
+
                     setTimeout(() => {
                         // Clear form and go back to login
                         document.getElementById("reset-username").value = "";
+                        document.getElementById("reset-code").value = "";
                         document.getElementById("reset-new-password").value = "";
                         msg.textContent = "";
+                        resetForm.querySelector('button').disabled = false;
+                        
+                        // Switch views
                         resetForm.style.display = "none";
                         loginForm.style.display = "block";
+                        
+                        // Show success on login screen
+                        const loginMsg = document.getElementById("login-message");
+                        if(loginMsg) {
+                            loginMsg.textContent = "Password changed. Please log in.";
+                            loginMsg.style.color = "green";
+                        }
                     }, 2000);
                 } else {
                     msg.style.color = "red";
-                    msg.textContent = data.message;
+                    msg.textContent = data.message; // e.g., "Invalid code"
                 }
             })
             .catch(err => {
@@ -310,46 +335,75 @@ function setupAuthentication() {
     }
 
     // 6. REGISTER SUBMIT (Original Logic)
-    if(registerForm) {
-        registerForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById("reg-username").value;
-            const password = document.getElementById("reg-password").value;
-            const msg = document.getElementById("reg-message");
+    // 6. REGISTER SUBMIT (Updated with Backup Codes)
+    // 6. REGISTER SUBMIT (Updated for HTML Modal)
+if(registerForm) {
+    registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById("reg-username").value;
+        const password = document.getElementById("reg-password").value;
+        const msg = document.getElementById("reg-message");
 
-            fetch(REGISTER_URL, { 
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.success) {
-                    msg.style.color = "green";
-                    msg.textContent = "Account Created!";
-                    setTimeout(() => {
-                        tabLogin.click(); // Switch to login tab
-                        const loginMsg = document.getElementById("login-message");
-                        if(loginMsg) {
-                            loginMsg.textContent = "Account created! Please log in.";
-                            loginMsg.style.color = "green";
-                        }
-                        // Clear inputs
-                        document.getElementById("reg-username").value = "";
-                        document.getElementById("reg-password").value = "";
-                        msg.textContent = "";
-                    }, 1500);
-                } else {
-                    msg.style.color = "red";
-                    msg.textContent = data.message;
+        fetch(REGISTER_URL, { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                msg.style.color = "green";
+                msg.textContent = "Processing...";
+
+                // --- 1. SHOW THE NEW MODAL ---
+                if (data.backup_codes) {
+                    // Put codes inside the textarea
+                    const codesList = data.backup_codes.join("\n");
+                    document.getElementById('backupCodesOutput').value = codesList;
+                    
+                    // Show the modal
+                    document.getElementById('backupCodesModal').style.display = 'block';
+
+                    // Hide the Login/Register modal so they focus on the codes
+                    document.getElementById('loginModal').style.display = 'none';
                 }
-            })
-            .catch(err => {
-                console.error(err);
-                msg.textContent = "Error: Check console (F12)";
-            });
+
+                // --- 2. HANDLE "I SAVED THEM" BUTTON ---
+                document.getElementById('closeBackupBtn').onclick = function() {
+                    // Close the backup modal
+                    document.getElementById('backupCodesModal').style.display = 'none';
+                    
+                    // Re-open Login Modal and switch to Login Tab
+                    const loginModal = document.getElementById('loginModal');
+                    const tabLogin = document.getElementById("tab-login");
+                    const msgLogin = document.getElementById("login-message");
+
+                    loginModal.style.display = "block";
+                    tabLogin.click(); // Switch tab
+                    
+                    // Success Message
+                    if(msgLogin) {
+                        msgLogin.textContent = "Account created! Please log in.";
+                        msgLogin.style.color = "green";
+                    }
+
+                    // Clear inputs
+                    document.getElementById("reg-username").value = "";
+                    document.getElementById("reg-password").value = "";
+                    msg.textContent = "";
+                };
+
+            } else {
+                msg.style.color = "red";
+                msg.textContent = data.message;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            msg.textContent = "Error: Check console (F12)";
         });
-    }
+    });
+}
 }
 
 // 5. CONTACT FORM

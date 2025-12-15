@@ -218,6 +218,7 @@
 
         <form id="resetForm" class="auth-form" style="display: none">
           <h2 style="margin-top: 20px">Reset Password</h2>
+
           <div class="input-group">
             <input
               type="text"
@@ -226,20 +227,35 @@
               required
             />
           </div>
+
+          <div class="input-group">
+            <input
+              type="text"
+              id="reset-code"
+              placeholder="Enter 8-char Recovery Code"
+              maxlength="20"
+              required
+              style="border-color: #f2994a"
+            />
+          </div>
+
           <div class="input-group">
             <input
               type="password"
               id="reset-new-password"
-              placeholder="New Password"
+              placeholder="New Password (6-8 chars)"
+              minlength="6"
+              maxlength="8"
               required
             />
           </div>
+
           <button
             type="submit"
             class="modal-login-btn"
             style="background-color: #ff9800"
           >
-            Update Password
+            Verify & Update Password
           </button>
 
           <p id="reset-message" class="auth-message"></p>
@@ -256,7 +272,7 @@
             <input
               type="text"
               id="reg-username"
-              placeholder="Choose a Username"
+              placeholder="Choose a Username "
               required
             />
           </div>
@@ -264,7 +280,9 @@
             <input
               type="password"
               id="reg-password"
-              placeholder="Create Password"
+              placeholder="Choose a Password (6-8 chars)"
+              minlength="6"
+              maxlength="8"
               required
             />
           </div>
@@ -362,7 +380,51 @@
         </button>
       </div>
     </div>
+    <div id="backupCodesModal" class="modal" style="display: none">
+      <div class="modal-content" style="max-width: 500px; text-align: center">
+        <h2 style="color: #27ae60; margin-top: 10px">Account Created!</h2>
 
+        <div
+          style="
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+          "
+        >
+          <strong>IMPORTANT: SAVE THESE CODES</strong><br />
+          If you forgot your password, you will need these to recover your
+          account.
+        </div>
+
+        <textarea
+          id="backupCodesOutput"
+          readonly
+          style="
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 2px dashed #ccc;
+            background: #f9f9f9;
+            resize: none;
+          "
+        >
+        </textarea>
+
+        <button
+          id="closeBackupBtn"
+          class="modal-login-btn"
+          style="margin-top: 15px"
+        >
+          I have saved these codes
+        </button>
+      </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
