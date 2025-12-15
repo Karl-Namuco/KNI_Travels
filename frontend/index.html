@@ -25,6 +25,11 @@
           <li><a href="#mytripspage">My Trips</a></li>
           <li><a href="#profilepage">Profile</a></li>
           <li><a href="#helppage">Help</a></li>
+          <li id="admin-nav-link" style="display: none">
+            <a href="admin.html" style="color: red; font-weight: bold"
+              >Admin Panel</a
+            >
+          </li>
         </ul>
       </nav>
       <div class="nav-extras">
@@ -45,22 +50,26 @@
         <div class="hero-content">
           <h1 class="EXPLORE">EXPLORE THE WORLD</h1>
           <p>
-            Discover hidden gems and breathtaking landscapes. We make your journey 
-            seamless, safe, and unforgettable so you can focus on the memories.
+            Discover hidden gems and breathtaking landscapes. We make your
+            journey seamless, safe, and unforgettable so you can focus on the
+            memories.
           </p>
           <button class="cta-button">Book now</button>
         </div>
-        
+
         <div class="hero-images">
-            <img src="assets/logo.png" alt="Travel Destination" class="hero-main-img" id="slideshow-img">
+          <img
+            src="assets/logo.png"
+            alt="Travel Destination"
+            class="hero-main-img"
+            id="slideshow-img"
+          />
         </div>
-        
       </section>
-      <hr>
+      <hr />
       <section id="travelpage">
         <h2>Travel Packages</h2>
-        <div class="card-grid" id="destinations-grid">
-            </div>
+        <div class="card-grid" id="destinations-grid"></div>
       </section>
 
       <section id="mytripspage">
@@ -72,53 +81,77 @@
 
       <section id="profilepage">
         <h2>My Profile</h2>
-        
+
         <div class="profile-card">
-            <div class="profile-header">
-                <div class="avatar-circle">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-                <h3 id="profile-username">Guest User</h3>
-                <span class="role-badge" id="profile-role">Traveler</span>
+          <div class="profile-header">
+            <div class="avatar-circle">
+              <i class="fa-solid fa-user"></i>
             </div>
+            <h3 id="profile-username">Guest User</h3>
+            <span class="role-badge" id="profile-role">Traveler</span>
+          </div>
 
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0" />
 
-            <div class="profile-stats">
-                <div class="stat-item">
-                    <strong id="stat-trips">0</strong>
-                    <span>Trips Booked</span>
-                </div>
-                <div class="stat-item">
-                    <strong style="color: #27ae60;">Active</strong>
-                    <span>Account Status</span>
-                </div>
+          <div class="profile-stats">
+            <div class="stat-item">
+              <strong id="stat-trips">0</strong>
+              <span>Trips Booked</span>
             </div>
-
-            <div class="profile-actions">
-                <button id="logout-btn-profile" class="logout-btn-styled">
-                    <i class="fa-solid fa-right-from-bracket"></i> Log Out
-                </button>
+            <div class="stat-item">
+              <strong style="color: #27ae60">Active</strong>
+              <span>Account Status</span>
             </div>
+          </div>
+
+          <div class="profile-actions">
+            <button id="logout-btn-profile" class="logout-btn-styled">
+              <i class="fa-solid fa-right-from-bracket"></i> Log Out
+            </button>
+          </div>
         </div>
       </section>
 
       <section id="helppage">
         <h2>Help & Support</h2>
-        <div class="contact-container" style="max-width: 500px; margin: 0 auto;">
-            <form id="contactForm" class="contact-form">
-                <div class="input-group">
-                    <input type="text" id="contact-name" placeholder="Your Name" required>
-                </div>
-                <div class="input-group">
-                    <input type="email" id="contact-email" placeholder="Your Email" required>
-                </div>
-                <div class="input-group">
-                    <textarea id="contact-message" placeholder="How can we help you?" rows="5" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;" required></textarea>
-                </div>
-                <button type="submit" class="modal-login-btn">Send Message</button>
-                <p id="contact-response" style="margin-top:10px; text-align:center;"></p>
-            </form>
+        <div class="contact-container" style="max-width: 500px; margin: 0 auto">
+          <form id="contactForm" class="contact-form">
+            <div class="input-group">
+              <input
+                type="text"
+                id="contact-name"
+                placeholder="Your Name"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <input
+                type="email"
+                id="contact-email"
+                placeholder="Your Email"
+                required
+              />
+            </div>
+            <div class="input-group">
+              <textarea
+                id="contact-message"
+                placeholder="How can we help you?"
+                rows="5"
+                style="
+                  width: 100%;
+                  padding: 12px;
+                  border: 1px solid #ddd;
+                  border-radius: 8px;
+                "
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="modal-login-btn">Send Message</button>
+            <p
+              id="contact-response"
+              style="margin-top: 10px; text-align: center"
+            ></p>
+          </form>
         </div>
       </section>
     </main>
@@ -127,14 +160,16 @@
       <div class="footer-links">
         <a href="#">Copyright Information</a>
         <a href="#" id="aboutUsBtn">About us</a>
-        
+
         <div class="footer-dropdown">
-            <span class="dropdown-trigger">Developer Team <i class="fa-solid fa-caret-down"></i></span>
-            <div class="dropdown-content">
-                <a href="profile1.html" target="_blank">Karl Namuco</a>
-                <a href="profile2.html" target="_blank">Nero De Paz</a>
-                <a href="profile3.html" target="_blank">Ia Mary Sorio</a>
-                </div>
+          <span class="dropdown-trigger"
+            >Developer Team <i class="fa-solid fa-caret-down"></i
+          ></span>
+          <div class="dropdown-content">
+            <a href="profile1.html" target="_blank">Karl Namuco</a>
+            <a href="profile2.html" target="_blank">Nero De Paz</a>
+            <a href="profile3.html" target="_blank">Ia Mary Sorio</a>
+          </div>
         </div>
 
         <a href="#" id="missionBtn">Mission & Vision</a>
@@ -152,55 +187,181 @@
         <form id="loginForm">
           <h2 style="margin-top: 20px">Welcome Back</h2>
           <div class="input-group">
-            <input type="text" id="login-username" placeholder="Username" required />
+            <input
+              type="text"
+              id="login-username"
+              placeholder="Username"
+              required
+            />
           </div>
           <div class="input-group">
-            <input type="password" id="login-password" placeholder="Password" required />
+            <input
+              type="password"
+              id="login-password"
+              placeholder="Password"
+              required
+            />
           </div>
+
+          <p style="text-align: right; margin-top: 5px; margin-bottom: 15px">
+            <a
+              href="#"
+              id="forgot-pass-link"
+              style="color: blue; font-size: 0.9em; text-decoration: none"
+              >Forgot Password?</a
+            >
+          </p>
+
           <button type="submit" class="modal-login-btn">Log In</button>
           <p id="login-message" class="auth-message"></p>
+        </form>
+
+        <form id="resetForm" class="auth-form" style="display: none">
+          <h2 style="margin-top: 20px">Reset Password</h2>
+          <div class="input-group">
+            <input
+              type="text"
+              id="reset-username"
+              placeholder="Enter your Username"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <input
+              type="password"
+              id="reset-new-password"
+              placeholder="New Password"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            class="modal-login-btn"
+            style="background-color: #ff9800"
+          >
+            Update Password
+          </button>
+
+          <p id="reset-message" class="auth-message"></p>
+          <p style="text-align: center; margin-top: 10px">
+            <a href="#" id="back-to-login" style="color: #333; font-size: 0.9em"
+              >Back to Login</a
+            >
+          </p>
         </form>
 
         <form id="registerForm" style="display: none">
           <h2 style="margin-top: 20px">Create Account</h2>
           <div class="input-group">
-             <input type="text" id="reg-username" placeholder="Choose a Username" required />
+            <input
+              type="text"
+              id="reg-username"
+              placeholder="Choose a Username"
+              required
+            />
           </div>
           <div class="input-group">
-             <input type="password" id="reg-password" placeholder="Create Password" required />
+            <input
+              type="password"
+              id="reg-password"
+              placeholder="Create Password"
+              required
+            />
           </div>
-          <button type="submit" class="modal-login-btn" style="background-color: #27ae60">Register</button>
+          <button
+            type="submit"
+            class="modal-login-btn"
+            style="background-color: #27ae60"
+          >
+            Register
+          </button>
           <p id="reg-message" class="auth-message"></p>
         </form>
       </div>
     </div>
     <div id="bookingModal" class="modal">
-  <div class="modal-content" style="text-align: left; max-width: 500px;">
-    <span class="close-booking">&times;</span>
-    
-    <h2><i class="fa-solid fa-ticket"></i> Confirm Booking</h2>
-    <div style="margin: 20px 0; border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 15px 0;">
-        <h3 id="modal-trip-title" style="color: var(--primary-blue); margin-bottom: 5px;">Destination Name</h3>
-        <p style="color: #666; font-size: 0.9rem;">Price per person: <span id="modal-base-price" style="font-weight:bold;">₱0.00</span></p>
-    </div>
+      <div class="modal-content" style="text-align: left; max-width: 500px">
+        <span class="close-booking">&times;</span>
 
-    <div class="form-group" style="display: block; margin-bottom: 20px;">
-        <label style="font-weight: 600; display: block; margin-bottom: 8px;">Number of Tickets:</label>
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <button type="button" onclick="updateTickets(-1)" style="padding: 5px 15px; border-radius: 5px; border: 1px solid #ccc;">-</button>
-            <input type="number" id="ticket-count" value="1" min="1" style="width: 60px; text-align: center; font-weight: bold;" readonly>
-            <button type="button" onclick="updateTickets(1)" style="padding: 5px 15px; border-radius: 5px; border: 1px solid #ccc;">+</button>
+        <h2><i class="fa-solid fa-ticket"></i> Confirm Booking</h2>
+        <div
+          style="
+            margin: 20px 0;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+          "
+        >
+          <h3
+            id="modal-trip-title"
+            style="color: var(--primary-blue); margin-bottom: 5px"
+          >
+            Destination Name
+          </h3>
+          <p style="color: #666; font-size: 0.9rem">
+            Price per person:
+            <span id="modal-base-price" style="font-weight: bold">₱0.00</span>
+          </p>
         </div>
-    </div>
 
-    <div style="background-color: #f9f9f9; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: right;">
-        <span style="font-size: 1.1rem; color: #333;">Total Price:</span>
-        <h2 id="modal-total-price" style="color: #F2994A; margin: 0;">₱0.00</h2>
-    </div>
+        <div class="form-group" style="display: block; margin-bottom: 20px">
+          <label style="font-weight: 600; display: block; margin-bottom: 8px"
+            >Number of Tickets:</label
+          >
+          <div style="display: flex; align-items: center; gap: 10px">
+            <button
+              type="button"
+              onclick="updateTickets(-1)"
+              style="
+                padding: 5px 15px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+              "
+            >
+              -
+            </button>
+            <input
+              type="number"
+              id="ticket-count"
+              value="1"
+              min="1"
+              style="width: 60px; text-align: center; font-weight: bold"
+              readonly
+            />
+            <button
+              type="button"
+              onclick="updateTickets(1)"
+              style="
+                padding: 5px 15px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+              "
+            >
+              +
+            </button>
+          </div>
+        </div>
 
-    <button id="confirm-booking-btn" class="modal-login-btn">Confirm & Pay</button>
-  </div>
-  </div>
+        <div
+          style="
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: right;
+          "
+        >
+          <span style="font-size: 1.1rem; color: #333">Total Price:</span>
+          <h2 id="modal-total-price" style="color: #f2994a; margin: 0">
+            ₱0.00
+          </h2>
+        </div>
+
+        <button id="confirm-booking-btn" class="modal-login-btn">
+          Confirm & Pay
+        </button>
+      </div>
+    </div>
 
     <script src="script.js"></script>
   </body>
