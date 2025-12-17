@@ -2,7 +2,7 @@
 
 **KNI Travels** is a travel website designed to make planning trips easier and faster. It helps users discover both international landmarks and local Philippine gems in one place.
 
-The site is built as a **Single Page Application (SPA)**, meaning you can browse and book trips instantly without annoying page reloads.
+The site is built as a **Single Page Application**, meaning you can browse and book trips instantly without annoying page reloads.
 
 ---
 
@@ -29,8 +29,8 @@ The site is built as a **Single Page Application (SPA)**, meaning you can browse
 
 ## Performance
 We focused on making the site fast and easy to use on phones and computers.
-* [cite_start]**Desktop Score:** 99/100 (Performance) [cite: 405]
-* [cite_start]**Accessibility:** 100/100 [cite: 405]
+* **Desktop Score:** 99/100 (Performance)
+* **Accessibility:** 100/100
 
 ---
 
