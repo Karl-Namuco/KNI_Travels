@@ -49,7 +49,7 @@ We focused on making the site fast and easy to use on phones and computers.
 
 ---
 
-## Developers (Group 8 - BSIT 3A (TUP MANILA))
-**Nero Arbert D. De paz** - Extra features & Backend connection
-**Karl Cedrick R. Namuco** - Interface & Frontend Function
-**Ia Mary R. Sorio** - Design & Accesibility
+## Developers (Group 8 - BSIT 3A, TUP Manila)
+* **Karl Cedrick R. Namuco** - Interface & Frontend Function
+* **Nero Arbert D. De paz** - Extra features & Backend connection
+* **Ia Mary R. Sorio** - Design & Accessibility
