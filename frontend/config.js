@@ -1,1 +1,1 @@
-window.KNI_API_BASE_URL = "../backend";
+window.KNI_API_BASE_URL = "http://knitravels.freehosting.dev/backend_kni";
