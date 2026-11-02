@@ -1,9 +1,6 @@
--- 1. RESET DATABASE
-DROP DATABASE IF EXISTS kni_travels;
-CREATE DATABASE kni_travels;
-USE kni_travels;
+-- Select the target database in phpMyAdmin before importing this file.
 
--- 2. CREATE TABLES
+-- CREATE TABLES
 
 -- Users Table
 CREATE TABLE users (
@@ -51,7 +48,7 @@ CREATE TABLE recovery_codes (
   is_used tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 3. INSERT DEFAULT DATA
+-- INSERT DEFAULT DATA
 
 -- Create Admin User (Password: admin123)
 INSERT INTO users (username, password, role) VALUES 
@@ -62,7 +59,7 @@ INSERT INTO destinations (title, location, price, image_url) VALUES
 ('Mt. Fuji', 'Japan', 4440.00, 'assets/hero1.jpg'),
 ('Bpracay', 'Aklan, Philippines', 4500.00, 'https://i.pinimg.com/1200x/68/d0/e0/68d0e0bcb5eec82cb2165c9374b1510b.jpgg');
 
--- 4. ADD CONSTRAINTS
+-- ADD CONSTRAINTS
 
 -- Link Bookings to Users (Delete booking if user is deleted)
 ALTER TABLE bookings

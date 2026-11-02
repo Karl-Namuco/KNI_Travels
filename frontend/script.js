@@ -6,11 +6,12 @@ const gridContainer = document.getElementById('destinations-grid');
 const myTripsContainer = document.getElementById('myttrips');
 
 // --- API CONFIGURATION ---
-const API_BASE_URL = '../backend/api.php'; 
-const LOGIN_URL    = '../backend/login.php'; 
-const REGISTER_URL = '../backend/auth.php';  
-const CONTACT_URL  = '../backend/contact.php';
-const RESET_URL    = '../backend/reset_password.php';
+const API_ROOT     = (window.KNI_API_BASE_URL || '../backend').replace(/\/+$/, '');
+const API_BASE_URL = `${API_ROOT}/api.php`;
+const LOGIN_URL    = `${API_ROOT}/login.php`;
+const REGISTER_URL = `${API_ROOT}/auth.php`;
+const CONTACT_URL  = `${API_ROOT}/contact.php`;
+const RESET_URL    = `${API_ROOT}/reset_password.php`;
 
 
 // 2. MAIN INITIALIZATION

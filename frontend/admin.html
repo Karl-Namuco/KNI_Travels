@@ -299,6 +299,7 @@
       <p>© 2025 KNI Travels Admin Panel</p>
     </footer>
 
+    <script src="config.js"></script>
     <script>
       // 1. SECURITY CHECK (Ensures only admins can see this page)
       const userRole = localStorage.getItem("role");
@@ -308,9 +309,9 @@
         window.location.href = "index.html";
       }
 
-      // 2. API CONFIGURATION (FIXED PATH)
-      // We use "../" to go out of the 'frontend' folder and into 'backend'
-      const API_URL = "../backend/api.php";
+      // 2. API CONFIGURATION
+      const API_ROOT = (window.KNI_API_BASE_URL || "../backend").replace(/\/+$/, "");
+      const API_URL = `${API_ROOT}/api.php`;
 
       // --- FUNCTIONS ---
 

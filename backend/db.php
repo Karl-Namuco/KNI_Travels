@@ -1,9 +1,12 @@
 <?php
-$host = '127.0.0.1';
-$user = 'root';
-$pass = '';
-$db   = 'kni_travels';
-$port = 3325; // <--- THIS MUST MATCH YOUR XAMPP SCREENSHOT
+$configFile = __DIR__ . '/db.config.php';
+$config = is_file($configFile) ? require $configFile : [];
+
+$host = $config['host'] ?? '127.0.0.1';
+$user = $config['user'] ?? 'root';
+$pass = $config['pass'] ?? '';
+$db   = $config['database'] ?? 'kni_travels';
+$port = $config['port'] ?? 3325;
 
 $conn = new mysqli($host, $user, $pass, $db, $port);
 

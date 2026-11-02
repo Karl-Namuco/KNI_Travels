@@ -10,3 +10,4 @@ node_modules/
 
 # Ignore secrets
 .env
+backend/db.config.php
